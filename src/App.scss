@@ -1,0 +1,40 @@
+$menu-bar-height: 60px;
+$left-panel-width:250px;
+.main {
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  background-color: #f7f7f7;
+
+  .menu {
+    position: relative;
+    height: $menu-bar-height;
+    width: 100%;
+    background-color: #1e90ff;
+  }
+  
+  .content {
+    position: relative;
+    height: calc(100% - #{$menu-bar-height});
+    width: 100%;
+    background-color: black;
+
+    .left {
+      position: relative;
+      float: left;
+      height: 100%;
+      width:$left-panel-width;
+      background-color:  #f7f7f7;
+      border-right-width: 2px;
+      border-right-color: black;
+    }
+    .right {
+      position: relative;
+      float: left;
+      height: 100%;
+      width:calc(100% - #{$left-panel-width});
+      background-color:  #f7f7f7;
+    }
+  }
+}
+
