@@ -42,6 +42,11 @@ export default function App() {
   const classes = useStyles();
   let imgList = [];
   let paperList = [];
+  let yearIndex = {};
+  var paperCount = 0;
+  var imgCount = 0
+  let minYear = 10000
+  let maxYear = 0
   for (const paper in imgData) {
     for (const img in imgData[paper]) {
       imgList.push({
@@ -49,9 +54,16 @@ export default function App() {
       })
     };
     paperList.push(paperInfo[paper]['title'])
+    if (paperInfo[paper]['Year'] > maxYear){
+      console.log("update maxyear")
+      maxYear = paperInfo[paper]['Year']
+    }
+    if (paperInfo[paper]['Year'] < minYear){
+      minYear = paperInfo[paper]['Year']
+    }
   }
-  let init_data = {
-    year:[1990,2018],
+  const init_data = {
+    year:[minYear,maxYear],
     authors:authorNames,
     imgList:imgList,
     paperList:paperList,

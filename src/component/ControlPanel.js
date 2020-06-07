@@ -59,7 +59,6 @@ export default function ControlPanel(props) {
   }
 
   const { gilad, jason, antoine } = sstate;
-  const error = [gilad, jason, antoine].filter((v) => v).length !== 2;
   return (
     <div className={classes.root}>
       <div className={classes.element_holder}>
