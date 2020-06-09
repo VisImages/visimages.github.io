@@ -17,7 +17,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import imgData from './data/visimages_data.json'
 import authorNames from './data/authors.json'
 import paperInfo from './data/visimage_paper_info.json'
-import {observable} from "mobx-react"
+import Store from "./store"
 
 
 const drawerWidth = 350;
