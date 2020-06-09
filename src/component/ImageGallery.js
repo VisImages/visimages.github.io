@@ -46,9 +46,9 @@ class ImageGallery extends React.Component {
 
   componentDidMount() {
     // var temurls = []
-    // console.log(this.props.imgList.length)
+    console.log(visImages.imgList)
     for (var i = 1250; i < 1300; i++) {
-      let [paperId, imgId] = visImages.imgList[i].split('.')[0].split('_')
+      let [paperId, imgId] = "3100_00".split('_')
       // console.log(paperId, imgId)
       paperId = parseInt(paperId)
       imgId = parseInt(imgId)
@@ -66,9 +66,10 @@ class ImageGallery extends React.Component {
     const {classes} = this.props;
     const {urls} = this.state;
 
-    return (<Grid container justify="space-between" spacing={50}>
-      {urls.map((value) => (
-        <Card className={classes.card}>
+    return (<Grid container justify="space-between" spacing={5}>
+      {urls.map((value, index) => (
+        <Card className={classes.card}
+          key = {index}>
           <CardActionArea>
             <CardMedia
               className={classes.media}

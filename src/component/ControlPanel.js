@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme) => ({
 export default inject('visImages')(function ControlPanel({visImages}) {
   const classes = useStyles();
   // console.log(props.init_data)
-  console.log(visImages)
-  const [yearValue, setYear] = React.useState([1995,2010])
+  console.log(visImages.yearInterval)
+  // const [yearValue, setYear] = React.useState(visImages.yearInt)
   // console.log(yearValue)
   const [paperName, setPaper] = React.useState(null);
 
@@ -48,9 +48,9 @@ export default inject('visImages')(function ControlPanel({visImages}) {
     antoine: false,
   });
 
-  const handelYear = (event, newValue) => {
-    setYear(newValue)
-  }
+  // const handelYear = (event, newValue) => {
+  //   setYear(newValue)
+  // }
 
   const handleChange = (event) => {
     ssetState({ ...sstate, [event.target.name]: event.target.checked });
@@ -64,7 +64,7 @@ export default inject('visImages')(function ControlPanel({visImages}) {
   const { gilad, jason, antoine } = sstate;
   return (
     <div className={classes.root}>
-      <div className={classes.element_holder}>
+      <div className={classes.element_holder} key = "vis-number">
         <Typography id="number-title" gutterBottom>
           Visualization Amount
         </Typography>
@@ -73,7 +73,7 @@ export default inject('visImages')(function ControlPanel({visImages}) {
         </Typography>
         <Divider/>
       </div>
-      <div className={classes.element_holder}>
+      <div className={classes.element_holder} key = "paper-input">
         <Autocomplete
           value={paperName}
           onChange={(event, newValue) => {
@@ -133,15 +133,15 @@ export default inject('visImages')(function ControlPanel({visImages}) {
           )}
         />
       </div>
-      <div className={classes.element_holder}>
+      <div className={classes.element_holder} key = "year-slider">
         <Typography id="continuous-slider1" gutterBottom>
           Year
         </Typography>
         <Slider
-          value={yearValue}
+          value={visImages.yearInt}
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"
-          onChange={handelYear}
+          // onChange={handelYear}
           getAriaValueText={valuetext}
           marks={[
             {
@@ -157,7 +157,7 @@ export default inject('visImages')(function ControlPanel({visImages}) {
           max={visImages.yearInt[1]}
         />
       </div>
-      <div className={classes.element_holder}>
+      <div className={classes.element_holder} key = "author-selector">
         <Autocomplete
           multiple
           id="tags-standard"
@@ -173,7 +173,7 @@ export default inject('visImages')(function ControlPanel({visImages}) {
           )}
         />
       </div>
-      <div className={classes.element_holder}>
+      <div className={classes.element_holder} key = "type-selector">
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">Visualization types</FormLabel>
           <FormGroup>
