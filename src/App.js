@@ -11,7 +11,11 @@ import ImageGallery from './component/ImageGallery.js'
 import imgData from './data/visimages_data.json'
 import authorNames from './data/authors.json'
 import paperInfo from './data/visimage_paper_info.json'
+<<<<<<< HEAD
 import {inject} from 'mobx-react'
+=======
+import Store from "./store"
+>>>>>>> 76293843318c041adce91ae18f8b16fd7c2b025c
 
 
 const drawerWidth = 350;

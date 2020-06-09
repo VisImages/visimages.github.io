@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import PaperInfo from "./PaperInfo"
 import AuthorList from "./Author"
 import YearIdx from "./YearIdx"
@@ -67,3 +68,5 @@ var visImages = new VisImages();
 // visImages.init()
 
 export default visImages;
+=======
+>>>>>>> 76293843318c041adce91ae18f8b16fd7c2b025c
