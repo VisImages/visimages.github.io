@@ -8,6 +8,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { inject, observer } from 'mobx-react';
+import visImages from '../store';
 // import Minio from 'minio'
 
 
@@ -20,14 +22,6 @@ var minioClient = new Minio.Client({
 });
 
 // console.log(minioClient.getObject('visdata', 'images/1032/3.png'))
-
-var res = minioClient.presignedUrl('GET',
-  'visdata', 'images/1032/3.png', 24 * 60 * 60, function (err, presignedUrl) {
-    if (err) return console.log(err)
-    return presignedUrl
-  })
-
-console.log(res)
 
 const styles = theme => ({
   root: {
@@ -42,6 +36,8 @@ const styles = theme => ({
   },
 });
 
+@inject("visImages")
+@observer
 class ImageGallery extends React.Component {
   constructor(props) {
     super(props);
@@ -52,8 +48,8 @@ class ImageGallery extends React.Component {
     // var temurls = []
     // console.log(this.props.imgList.length)
     for (var i = 1250; i < 1300; i++) {
-      let [paperId, imgId] = this.props.imgList[i].imgName.split('.')[0].split('_')
-      console.log(paperId, imgId)
+      let [paperId, imgId] = visImages.imgList[i].split('.')[0].split('_')
+      // console.log(paperId, imgId)
       paperId = parseInt(paperId)
       imgId = parseInt(imgId)
       minioClient.presignedUrl('GET', 'visdata', `images/${paperId}/${imgId}.png`, 24 * 60 * 60,
@@ -61,7 +57,6 @@ class ImageGallery extends React.Component {
           const {urls} = this.state;
           urls.push(presignedUrl)
           this.setState({ urls: urls })
-
         })
     }
     // console.log("temp",temurls)

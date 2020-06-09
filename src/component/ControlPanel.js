@@ -11,6 +11,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
+import {inject} from 'mobx-react'
 
 const filter = createFilterOptions();
 
@@ -32,10 +33,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ControlPanel(props) {
+
+export default inject('visImages')(function ControlPanel({visImages}) {
   const classes = useStyles();
   // console.log(props.init_data)
-  const [yearValue, setYear] = React.useState(props.init_data.year)
+  console.log(visImages)
+  const [yearValue, setYear] = React.useState([1995,2010])
   // console.log(yearValue)
   const [paperName, setPaper] = React.useState(null);
 
@@ -66,7 +69,7 @@ export default function ControlPanel(props) {
           Visualization Amount
         </Typography>
         <Typography id="number" align="center">
-          {props.init_data.imgList.length}
+          {10000}
         </Typography>
         <Divider/>
       </div>
@@ -104,7 +107,7 @@ export default function ControlPanel(props) {
           clearOnBlur
           handleHomeEndKeys
           id="free-solo-with-text-demo"
-          options={props.init_data.paperList}
+          options={visImages.paperList}
           getOptionLabel={(option) => {
             // Value selected with enter, right from the input
             if (typeof option === 'string') {
@@ -142,23 +145,23 @@ export default function ControlPanel(props) {
           getAriaValueText={valuetext}
           marks={[
             {
-              value:props.init_data.year[0],
-              label:props.init_data.year[0],
+              value:visImages.yearInt[0],
+              label:visImages.yearInt[0],
             },
             {
-              value:props.init_data.year[1],
-              label:props.init_data.year[1],
+              value:visImages.yearInt[1],
+              label:visImages.yearInt[1],
             }
           ]}
-          min={props.init_data.year[0]}
-          max={props.init_data.year[1]}
+          min={visImages.yearInt[0]}
+          max={visImages.yearInt[1]}
         />
       </div>
       <div className={classes.element_holder}>
         <Autocomplete
           multiple
           id="tags-standard"
-          options={props.init_data.authors}
+          options={visImages.authorList}
           // getOptionLabel={(option) => option.title}
           defaultValue={[]}
           renderInput={(params) => (
@@ -188,4 +191,4 @@ export default function ControlPanel(props) {
       </div>
     </div>
   );
-};
+})

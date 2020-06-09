@@ -8,16 +8,10 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import ControlPanel from './component/ControlPanel.js'
 import ImageGallery from './component/ImageGallery.js'
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import imgData from './data/visimages_data.json'
 import authorNames from './data/authors.json'
 import paperInfo from './data/visimage_paper_info.json'
-import {observable} from "mobx-react"
+import {inject} from 'mobx-react'
 
 
 const drawerWidth = 350;
@@ -39,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function App() {
+export default inject('visImages')(function App() {
+  // const data = this.props.dataStore
   const classes = useStyles();
   let imgList = [];
   let paperList = [];
@@ -48,29 +43,16 @@ export default function App() {
   var imgCount = 0
   let minYear = 10000
   let maxYear = 0
-  for (const paper in imgData) {
-    for (const img in imgData[paper]) {
-      imgList.push({
-        imgName:imgData[paper][img]["file_name"],
-      })
-    };
-    paperList.push(paperInfo[paper]['title'])
-    if (paperInfo[paper]['Year'] > maxYear){
-      console.log("update maxyear")
-      maxYear = paperInfo[paper]['Year']
-    }
-    if (paperInfo[paper]['Year'] < minYear){
-      minYear = paperInfo[paper]['Year']
-    }
-  }
-  const init_data = {
-    year:[minYear,maxYear],
-    authors:authorNames,
-    imgList:imgList,
-    paperList:paperList,
-  };
-  // console.log(init_data)
-  // for (idx = 0; i < )
+  // for (const paper in imgData) {
+  //   for (const img in imgData[paper]) {
+  //     imgList.push({
+  //       imgName:imgData[paper][img]["file_name"],
+  //     })
+  //   };dataStore
+  //   imgList:imgList,
+  //   paperList:paperList,
+  // };
+  // console.log(visImages)
 
 
   return (
@@ -85,7 +67,7 @@ export default function App() {
       </AppBar>
       <div className={classes.controlPanel}>
       <Toolbar/>
-        <ControlPanel init_data = {init_data}/>
+        <ControlPanel/>
       </div>
       <main className={classes.content}>
         <Toolbar />
@@ -93,4 +75,4 @@ export default function App() {
       </main>
     </div>
   );
-}
+})
