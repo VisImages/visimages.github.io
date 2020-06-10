@@ -8,112 +8,116 @@ class VisImages {
     authorNameLogic: "or",
     vizType: [],
   };
-  @observable imgList = [];
-  @observable paperList = [];
-  @observable authorList = [];
 
   @observable paperInfo = {};
   @observable fullAuthorList = [];
   @observable yearIdx = {};
   @observable paper2Idx = {};
   @observable visImgData = {};
-  // @observable a ={};
-  // @observable yearInt = [0, 1999];
-  // visImgData.init();
 
 
   constructor() {
     this.fetchJson('./data/visimage_paper_info.json', action(data => this.paperInfo = data));
     this.fetchJson('./data/authors.json', action(data => this.fullAuthorList = data));
-    this.fetchJson('./data/yearIdx.json', action(data => this.yearIdx = data));
+    this.fetchJson('./data/yearIdx.json', action(data => { this.yearIdx = data; this.init() }));
     this.fetchJson('./data/paper2Idx.json', action(data => this.paper2Idx = data));
     this.fetchJson('./data/visimages_data_with_captions.json', action(data => this.visImgData = data));
-    this.init();
   }
 
   fetchJson = (url, cb) => {
-    return fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      return cb(data);
-      console.log(cb(data));
-    });
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        // console.log(data);
+        cb(data);
+      });
   };
 
+  @action
   init() {
-    // console.log("yearIdx",this.yearIdx)
-    // filterConditions.year = this.yearIdx.yearInt;
-    this.authorList = this.fullAuthorList;
-    this.paperList = Object.keys(this.paper2Idx);
-    console.log(this.yearIdx)
-  };
+    this.filterConditions.year =
+      [Math.min(...Object.keys(this.yearIdx).map((value) => parseInt(value))),
+      Math.max(...Object.keys(this.yearIdx).map((value) => parseInt(value))) - 1];
+  }
 
-  @computed get yearInt(){
+  @computed get yearInt() {
     console.log(this.yearIdx)
     return [
-      Math.min(...Object.keys(this.yearIdx).map((value)=>{
-        console.log("check",value)
-        return parseInt(value)})),
-      Math.max(...Object.keys(this.yearIdx).map((value)=>{return parseInt(value)}))];
+      Math.min(...Object.keys(this.yearIdx).map((value) => parseInt(value))),
+      Math.max(...Object.keys(this.yearIdx).map((value) => parseInt(value))) - 1];
   };
 
-  @computed get filteredImgList() {
-    this.imgList = []
-    this.paperList = []
-    // without paper specification
-    if (this.filterConditions.paperName == null) {
-      for (const paper in this.visImgData) {
-        // year condition
-        if (this.filterConditions.year.length == 0 ||
-          this.yearIdx.index[this.filterConditions.year[0]] <= paper &&
-          this.yearIdx.index[this.filterConditions.year[1]] > paper) {
+  @computed get filteredList() {
+    let imgList = []
+    let paperList = []
+    let authorList = []
+    // without paper specification.
+    console.log(this.filterConditions.paperName === null)
+    if (this.filterConditions.paperName === null) {
+      for (let paper in this.visImgData) {
+        if (this.paperInfo[paper]["paperType"] !== "VAST" && 
+          this.paperInfo[paper]["paperType"] !== "InfoVis"){
+            continue
+          }
+        if (this.filterConditions.year.length === 0 ||
+          (this.yearIdx[this.filterConditions.year[0]] <= paper &&
+            this.yearIdx[this.filterConditions.year[1] + 1] > paper)) {
           {
             for (let authorIdx = 0;
-              authorIdx < this.paperInfo.info[paper]["authors"].length;
+              authorIdx < this.paperInfo[paper]["authors"].length;
               authorIdx++) {
-              if (this.authorList.indexOf(this.paperInfo.info[paper]["authors"][authorIdx]) !== -1) {
-                this.authorList.push(this.paperInfo.info[paper]["authors"][authorIdx])
+              if (authorList.indexOf(
+                this.paperInfo[paper]["authors"][authorIdx]) === -1) {
+                authorList.push(this.paperInfo[paper]["authors"][authorIdx])
               }
             }
             let authorValid = false;
-            if (this.filterConditions.authorName.length == 0) {
+            if (this.filterConditions.authorName.length === 0) {
               authorValid = true;
             }
-            else if (this.filterConditions.authorNameLogic == "or") {
+            else if (this.filterConditions.authorNameLogic === "or") {
               for (let authorIdx = 0;
                 authorIdx < this.filterConditions.authorName.length;
                 authorIdx++) {
-                if (this.paperInfo.info[paper]["authors"].indexOf(this.filterConditions.authorName[authorIdx]) !== -1) {
+                if (this.paperInfo[paper]["authors"].indexOf(
+                  this.filterConditions.authorName[authorIdx]) !== -1) {
                   authorValid = true;
                   break
                 }
               }
             }
-            else if (this.filterConditions.authorNameLogic == "and") {
+            else if (this.filterConditions.authorNameLogic === "and") {
               for (let authorIdx = 0;
                 authorIdx < this.filterConditions.authorName.length;
                 authorIdx++) {
-                if (this.paperInfo.info[paper]["authors"].indexOf(this.filterConditions.authorName[authorIdx]) === -1) {
+                if (this.paperInfo[paper]["authors"].indexOf(
+                  this.filterConditions.authorName[authorIdx]) === -1) {
                   break
                 }
               }
             }
-            if (authorValid == false) {
+            if (authorValid === false) {
               continue;
             }
-            this.paperList.push(this.paperInfo.info[paper]['title'])
-            for (const img in this.visImgData[paper]) {
-              this.imgList.push(this.visImgData[paper][img]['file_name'])
+            paperList.push(this.paperInfo[paper]['title'])
+            for (let img in this.visImgData[paper]) {
+              imgList.push(this.visImgData[paper][img]['file_name'].split(".")[0])
             }
           }
         }
       }
     }
-    else if (this.paper2Idx.indexOf[this.filterConditions.paperName] !== undefined) {
-      let paper = this.paper2Idx.index[this.filterConditions.paperName]
-      for (const img in this.visImgData[paper]) {
-        this.imgList.push(this.visImgData[paper][img]['file_name'])
+    else if (this.paper2Idx[this.filterConditions.paperName] !== undefined) {
+      let paper = this.paper2Idx[this.filterConditions.paperName]
+      authorList = this.paperInfo[paper]["authors"];
+      for (let img in this.visImgData[paper]) {
+        imgList.push(this.visImgData[paper][img]['file_name'].split(".")[0])
       }
+    }
+    return {
+      "imgList": imgList,
+      "paperList": paperList,
+      "authorList": authorList,
     }
   };
 };

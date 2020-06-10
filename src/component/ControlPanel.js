@@ -11,7 +11,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
-import {inject} from 'mobx-react'
+import {inject, observer} from 'mobx-react';
+import {observable} from 'mobx';
 
 const filter = createFilterOptions();
 
@@ -34,13 +35,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default inject('visImages')(function ControlPanel({visImages}) {
+export default inject('visImages')(observer(function ControlPanel({visImages}) {
   const classes = useStyles();
-  // console.log(props.init_data)
-  console.log(visImages.yearInterval)
-  // const [yearValue, setYear] = React.useState(visImages.yearInt)
-  // console.log(yearValue)
-  const [paperName, setPaper] = React.useState(null);
 
   const [sstate, ssetState] = React.useState({
     gilad: true,
@@ -48,66 +44,55 @@ export default inject('visImages')(function ControlPanel({visImages}) {
     antoine: false,
   });
 
-  // const handelYear = (event, newValue) => {
-  //   setYear(newValue)
-  // }
+  const handleYear = (event, newValue) => {
+    visImages.filterConditions["year"] = newValue;
+  }
+
+  const handlePaper = (event, newValue) => {
+    if (typeof newValue === 'string') {
+      visImages.filterConditions["paperName"] = newValue;
+    } else if (newValue && newValue.inputValue) {
+      // Create a new value from the user input
+      visImages.filterConditions["paperName"] = newValue.inputValue;
+    } else {
+      visImages.filterConditions["paperName"] = newValue;
+    }
+  }
+  const handleAuthor = (event, newValue) => {
+    visImages.filterConditions["authorName"] = newValue;
+  }
 
   const handleChange = (event) => {
     ssetState({ ...sstate, [event.target.name]: event.target.checked });
   };
 
-  function valuetext(value) {
-    // console.log(typeof value)
-    return `${value}`.slice(-2);
-  }
 
   const { gilad, jason, antoine } = sstate;
+  console.log(visImages.filterConditions.year)
   return (
     <div className={classes.root}>
       <div className={classes.element_holder} key = "vis-number">
         <Typography id="number-title" gutterBottom>
-          Visualization Amount
+          Image Amount
         </Typography>
         <Typography id="number" align="center">
-          {10000}
+          {visImages.filteredList.imgList.length}
         </Typography>
         <Divider/>
       </div>
       <div className={classes.element_holder} key = "paper-input">
         <Autocomplete
-          value={paperName}
-          onChange={(event, newValue) => {
-            if (typeof newValue === 'string') {
-              setPaper({
-                title: newValue,
-              });
-            } else if (newValue && newValue.inputValue) {
-              // Create a new value from the user input
-              setPaper({
-                title: newValue.inputValue,
-              });
-            } else {
-              setPaper(newValue);
-            }
-          }}
+          value={visImages.filterConditions["paperName"]}
+          onChange={handlePaper}
           filterOptions={(options, params) => {
             const filtered = filter(options, params);
-
-            // Suggest the creation of a new value
-            if (params.inputValue !== '') {
-              filtered.push({
-                inputValue: params.inputValue,
-                title: `Add "${params.inputValue}"`,
-              });
-            }
-
             return filtered;
           }}
-          selectOnFocus
+          selectOnFocus={true}
           clearOnBlur
           handleHomeEndKeys
           id="free-solo-with-text-demo"
-          options={visImages.paperList}
+          options={visImages.filteredList.paperList}
           getOptionLabel={(option) => {
             // Value selected with enter, right from the input
             if (typeof option === 'string') {
@@ -138,11 +123,10 @@ export default inject('visImages')(function ControlPanel({visImages}) {
           Year
         </Typography>
         <Slider
-          value={visImages.yearInt}
+          value={visImages.filterConditions.year}
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"
-          // onChange={handelYear}
-          getAriaValueText={valuetext}
+          onChange={handleYear}
           marks={[
             {
               value:visImages.yearInt[0],
@@ -161,7 +145,8 @@ export default inject('visImages')(function ControlPanel({visImages}) {
         <Autocomplete
           multiple
           id="tags-standard"
-          options={visImages.authorList}
+          options={visImages.filteredList.authorList}
+          onChange={handleAuthor}
           // getOptionLabel={(option) => option.title}
           defaultValue={[]}
           renderInput={(params) => (
@@ -191,4 +176,4 @@ export default inject('visImages')(function ControlPanel({visImages}) {
       </div>
     </div>
   );
-})
+}))

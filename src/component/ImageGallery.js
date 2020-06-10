@@ -25,7 +25,15 @@ var minioClient = new Minio.Client({
 
 const styles = theme => ({
   root: {
-    flexGrow: 1,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  gallery: {
+    // flexGrow: 1,
+    margin:30,
+  },
+  pagenum: {
+    
   },
   card: {
     maxWidth: 250,
@@ -46,15 +54,18 @@ class ImageGallery extends React.Component {
 
   componentDidMount() {
     // var temurls = []
-    console.log(visImages.imgList)
-    for (var i = 1250; i < 1300; i++) {
+    console.log(visImages.filteredList.imgList.length)
+    const imgList = visImages.filteredList.imgList;
+    for (let i = 0;
+      i < 5;
+      i++) {
       let [paperId, imgId] = "3100_00".split('_')
       // console.log(paperId, imgId)
       paperId = parseInt(paperId)
       imgId = parseInt(imgId)
       minioClient.presignedUrl('GET', 'visdata', `images/${paperId}/${imgId}.png`, 24 * 60 * 60,
         (err, presignedUrl) => {
-          const {urls} = this.state;
+          const { urls } = this.state;
           urls.push(presignedUrl)
           this.setState({ urls: urls })
         })
@@ -63,30 +74,43 @@ class ImageGallery extends React.Component {
 
   }
   render() {
-    const {classes} = this.props;
-    const {urls} = this.state;
+    const { classes } = this.props;
+    const { urls } = this.state;
 
-    return (<Grid container justify="space-between" spacing={5}>
-      {urls.map((value, index) => (
-        <Card className={classes.card}
-          key = {index}>
-          <CardActionArea>
-            <CardMedia
-              className={classes.media}
-              image={value}
-            />
-          </CardActionArea>
-          <CardActions>
-            <Button size="small" color="primary">
-              Share
+    return (
+      <div className={classes.root}>
+        <div className={classes.gallery}><Grid
+          container
+          justify="space-between"
+          spacing={5}
+        >
+          {urls.map((value, index) => (
+            <Card className={classes.card}
+              key={index}>
+              <CardActionArea>
+                <CardMedia
+                  className={classes.media}
+                  image={value}
+                />
+              </CardActionArea>
+              <CardActions>
+                <Button size="small" color="primary">
+                  Share
             </Button>
-            <Button size="small" color="primary">
-              Learn More
+                <Button size="small" color="primary">
+                  Learn More
             </Button>
-          </CardActions>
-        </Card>
-      ))}
-    </Grid>)
+              </CardActions>
+            </Card>
+          ))}
+        </Grid>
+        </div>
+        <div className={classes.pagenum}>
+            <Typography align="center">
+              {"pageNum"}
+            </Typography>
+        </div>
+      </div>)
   };
 }
 
