@@ -7,13 +7,14 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Pagination from '@material-ui/lab/Pagination';
 import Grid from '@material-ui/core/Grid';
 import { inject, observer } from 'mobx-react';
 import visImages from '../store';
 // import Minio from 'minio'
 
 
-var Minio = require('minio')
+var Minio = require('minio');
 
 var minioClient = new Minio.Client({
   endPoint: 'minio.zjvis.org',
@@ -47,35 +48,15 @@ const styles = theme => ({
 @inject("visImages")
 @observer
 class ImageGallery extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { urls: [] };
-  }
-
-  componentDidMount() {
-    // var temurls = []
-    console.log(visImages.filteredList.imgList.length)
-    const imgList = visImages.filteredList.imgList;
-    for (let i = 0;
-      i < 5;
-      i++) {
-      let [paperId, imgId] = "3100_00".split('_')
-      // console.log(paperId, imgId)
-      paperId = parseInt(paperId)
-      imgId = parseInt(imgId)
-      minioClient.presignedUrl('GET', 'visdata', `images/${paperId}/${imgId}.png`, 24 * 60 * 60,
-        (err, presignedUrl) => {
-          const { urls } = this.state;
-          urls.push(presignedUrl)
-          this.setState({ urls: urls })
-        })
-    }
-    // console.log("temp",temurls)
-
-  }
+  handlePage = (event, page) => {
+    console.log(page);
+    visImages.pageNum = page;
+    visImages.showList = visImages.filteredList.imgList.slice(
+      visImages.showNum * page,Math.min(visImages.filteredList.imgList.length,
+        visImages.showNum * (page + 1)));
+  };
   render() {
     const { classes } = this.props;
-    const { urls } = this.state;
 
     return (
       <div className={classes.root}>
@@ -84,7 +65,7 @@ class ImageGallery extends React.Component {
           justify="space-between"
           spacing={5}
         >
-          {urls.map((value, index) => (
+          {visImages.fetchUrls.map((value, index) => (
             <Card className={classes.card}
               key={index}>
               <CardActionArea>
@@ -105,10 +86,8 @@ class ImageGallery extends React.Component {
           ))}
         </Grid>
         </div>
-        <div className={classes.pagenum}>
-            <Typography align="center">
-              {"pageNum"}
-            </Typography>
+        <div className={classes.pagenum} onChange = {this.handlePage}>
+            <Pagination page = {visImages.pageNum} count={Math.ceil(visImages.filteredList.imgList.length/visImages.showNum)} onChange = {this.handlePage}></Pagination>
         </div>
       </div>)
   };

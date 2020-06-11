@@ -46,6 +46,10 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
 
   const handleYear = (event, newValue) => {
     visImages.filterConditions["year"] = newValue;
+    visImages.pageNum = 1;
+    visImages.showList = visImages.filteredList.imgList.slice(
+      0,Math.min(visImages.filteredList.imgList.length,
+        visImages.showNum));
   }
 
   const handlePaper = (event, newValue) => {
@@ -57,9 +61,17 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
     } else {
       visImages.filterConditions["paperName"] = newValue;
     }
+    visImages.pageNum = 1;
+    visImages.showList = visImages.filteredList.imgList.slice(
+      0,Math.min(visImages.filteredList.imgList.length,
+        visImages.showNum));
   }
   const handleAuthor = (event, newValue) => {
     visImages.filterConditions["authorName"] = newValue;
+    visImages.pageNum = 1;
+    visImages.showList = visImages.filteredList.imgList.slice(
+      0,Math.min(visImages.filteredList.imgList.length,
+        visImages.showNum));
   }
 
   const handleChange = (event) => {

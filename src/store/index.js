@@ -1,5 +1,14 @@
 import { observable, action, computed } from "mobx";
 
+
+var Minio = require('minio');
+
+var minioClient = new Minio.Client({
+  endPoint: 'minio.zjvis.org',
+  accessKey: 'ZWUkouAYfWR5ycxc1LL8Mbp0d02yqDnrJHSKh0sN0javzWZ79KcIVY53ns78pCYW',
+  secretKey: 'l5sKx2Bmuqv308ZtzkhaPSlgscUezpJrtBOH1mICnKCW6FfrCPZa6KDrV8zp5aAM#'
+});
+
 class VisImages {
   @observable filterConditions = {
     year: [],
@@ -15,13 +24,17 @@ class VisImages {
   @observable paper2Idx = {};
   @observable visImgData = {};
 
+  @observable showNum = 20;
+  @observable showList = [];
+  @observable pageNum = 1;
 
   constructor() {
     this.fetchJson('./data/visimage_paper_info.json', action(data => this.paperInfo = data));
     this.fetchJson('./data/authors.json', action(data => this.fullAuthorList = data));
-    this.fetchJson('./data/yearIdx.json', action(data => { this.yearIdx = data; this.init() }));
+    this.fetchJson('./data/yearIdx.json', action(data => { this.yearIdx = data; this.init_year() }));
     this.fetchJson('./data/paper2Idx.json', action(data => this.paper2Idx = data));
-    this.fetchJson('./data/visimages_data_with_captions.json', action(data => this.visImgData = data));
+    this.fetchJson('./data/visimages_data_with_captions.json', action(
+      data => {this.visImgData = data; this.init_showList()}));
   }
 
   fetchJson = (url, cb) => {
@@ -34,10 +47,28 @@ class VisImages {
   };
 
   @action
-  init() {
+  init_year() {
     this.filterConditions.year =
       [Math.min(...Object.keys(this.yearIdx).map((value) => parseInt(value))),
       Math.max(...Object.keys(this.yearIdx).map((value) => parseInt(value))) - 1];
+  }
+
+  @action
+  init_showList() {
+      let count = 0;
+      for (let paper in this.visImgData) {
+        for (let img in this.visImgData[paper]) {
+          this.showList.push(this.visImgData[paper][img]['file_name'].split(".")[0])
+          count += 1;
+          console.log("add",this.showList);
+          if( count >= this.showNum){
+            break
+          }
+        }
+        if( count >= this.showNum){
+          break
+        }
+      }
   }
 
   @computed get yearInt() {
@@ -47,12 +78,31 @@ class VisImages {
       Math.max(...Object.keys(this.yearIdx).map((value) => parseInt(value))) - 1];
   };
 
+  @computed get fetchUrls(){
+    console.log(this.showList);
+    let urls = [];
+    for (let i = 0;
+      i < this.showList.length;
+      i++) {
+      let [paperId, imgId] = this.showList[i].split('_')
+      // console.log(paperId, imgId)
+      paperId = parseInt(paperId)
+      imgId = parseInt(imgId)
+      minioClient.presignedUrl('GET', 'visdata', `images/${paperId}/${imgId}.png`, 24 * 60 * 60,
+        (err, presignedUrl) => {
+          urls.push(presignedUrl);
+        })
+    }
+    return urls;
+  }
+
   @computed get filteredList() {
-    let imgList = []
-    let paperList = []
-    let authorList = []
+    let imgList = [];
+    let paperList = [];
+    let authorList = [];
+    const displayNum = 50;
     // without paper specification.
-    console.log(this.filterConditions.paperName === null)
+    // console.log(this.filterConditions.paperName === null)
     if (this.filterConditions.paperName === null) {
       for (let paper in this.visImgData) {
         if (this.paperInfo[paper]["paperType"] !== "VAST" && 
@@ -118,6 +168,8 @@ class VisImages {
       "imgList": imgList,
       "paperList": paperList,
       "authorList": authorList,
+      "pageNum":0,
+      "pageAmount":20
     }
   };
 };
