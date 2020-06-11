@@ -87,7 +87,7 @@ class ImageGallery extends React.Component {
         </Grid>
         </div>
         <div className={classes.pagenum} onChange = {this.handlePage}>
-            <Pagination page = {visImages.pageNum} count={Math.ceil(visImages.filteredList.imgList.length/visImages.showNum)} onChange = {this.handlePage}></Pagination>
+            <Pagination page = {visImages.pageNum} count={Math.floor(visImages.filteredList.imgList.length/visImages.showNum)} onChange = {this.handlePage}></Pagination>
         </div>
       </div>)
   };
