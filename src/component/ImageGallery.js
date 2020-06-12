@@ -31,10 +31,10 @@ const styles = theme => ({
   },
   gallery: {
     // flexGrow: 1,
-    margin:30,
+    margin: 30,
   },
   pagenum: {
-    
+
   },
   card: {
     maxWidth: 250,
@@ -52,9 +52,14 @@ class ImageGallery extends React.Component {
     console.log(page);
     visImages.pageNum = page;
     visImages.showList = visImages.filteredList.imgList.slice(
-      visImages.showNum * page,Math.min(visImages.filteredList.imgList.length,
-        visImages.showNum * (page + 1)));
+      visImages.showNum * page, 
+      Math.min(
+        visImages.filteredList.imgList.length,
+        visImages.showNum * (page + 1))
+        );
+    visImages.updateFetchUrls();
   };
+
   render() {
     const { classes } = this.props;
 
@@ -65,7 +70,9 @@ class ImageGallery extends React.Component {
           justify="space-between"
           spacing={5}
         >
-          {visImages.fetchUrls.map((value, index) => (
+          {visImages.fetchUrls.map((value, index) => {
+            // console.log(value)
+            return (
             <Card className={classes.card}
               key={index}>
               <CardActionArea>
@@ -83,11 +90,17 @@ class ImageGallery extends React.Component {
             </Button>
               </CardActions>
             </Card>
-          ))}
+          )})}
         </Grid>
         </div>
-        <div className={classes.pagenum} onChange = {this.handlePage}>
-            <Pagination page = {visImages.pageNum} count={Math.floor(visImages.filteredList.imgList.length/visImages.showNum)} onChange = {this.handlePage}></Pagination>
+        <div
+          className={classes.pagenum}
+          onChange={this.handlePage}>
+          <Pagination
+            page={visImages.pageNum}
+            count={Math.floor(
+              visImages.filteredList.imgList.length / visImages.showNum)}
+            onChange={this.handlePage}/>
         </div>
       </div>)
   };

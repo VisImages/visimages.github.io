@@ -56,6 +56,7 @@ class VisImages {
   @action
   init_showList() {
       let count = 0;
+      console.log("init");
       for (let paper in this.visImgData) {
         for (let img in this.visImgData[paper]) {
           this.showList.push(this.visImgData[paper][img]['file_name'].split(".")[0])
@@ -69,17 +70,21 @@ class VisImages {
           break
         }
       }
+    this.updateFetchUrls();
   }
 
   @computed get yearInt() {
     console.log(this.yearIdx)
     return [
-      Math.min(...Object.keys(this.yearIdx).map((value) => parseInt(value))),
-      Math.max(...Object.keys(this.yearIdx).map((value) => parseInt(value))) - 1];
+      Math.min(...Object.keys(this.yearIdx).map(
+        (value) => parseInt(value))),
+      Math.max(...Object.keys(this.yearIdx).map(
+        (value) => parseInt(value))) - 1];
   };
 
-  @computed get fetchUrls(){
-    console.log(this.showList);
+  @observable fetchUrls = [];
+  @action changeFetchUrls = urls => this.fetchUrls = urls;
+  updateFetchUrls(){
     let urls = [];
     for (let i = 0;
       i < this.showList.length;
@@ -91,9 +96,9 @@ class VisImages {
       minioClient.presignedUrl('GET', 'visdata', `images/${paperId}/${imgId}.png`, 24 * 60 * 60,
         (err, presignedUrl) => {
           urls.push(presignedUrl);
+          if (urls.length === this.showList.length) this.changeFetchUrls(urls)
         })
     }
-    return urls;
   }
 
   @computed get filteredList() {
