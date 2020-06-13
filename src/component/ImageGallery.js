@@ -26,22 +26,26 @@ var minioClient = new Minio.Client({
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    flexDirection: 'column',
+    display:"flex",
+    flexDirection:"column",
+    justify:"center",
   },
   gallery: {
-    // flexGrow: 1,
-    margin: 30,
+    display:"flex",
+    height:"95%",
+    margin:0,
   },
   pagenum: {
-
+    display:"block",
+    // height:"5%",
   },
   card: {
     maxWidth: 250,
+    height: "20vh",
     margin: 5,
   },
   media: {
-    height: 140,
+    height:140,
   },
 });
 
@@ -65,15 +69,12 @@ class ImageGallery extends React.Component {
 
     return (
       <div className={classes.root}>
-        <div className={classes.gallery}><Grid
-          container
-          justify="space-between"
-          spacing={5}
-        >
+        <div className={classes.gallery}>
+          {/* <Grid container> */}
           {visImages.fetchUrls.map((value, index) => {
             // console.log(value)
             return (
-            <Card className={classes.card}
+            <Card item className={classes.card}
               key={index}>
               <CardActionArea>
                 <CardMedia
@@ -91,11 +92,9 @@ class ImageGallery extends React.Component {
               </CardActions>
             </Card>
           )})}
-        </Grid>
+        {/* </Grid> */}
         </div>
-        <div
-          className={classes.pagenum}
-          onChange={this.handlePage}>
+        <div className={classes.pagenum}>
           <Pagination
             page={visImages.pageNum}
             count={Math.floor(

@@ -20,16 +20,18 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
-  controlPanel:{
-    float:"left",
-    width: drawerWidth,
-    flexShrink: 0,
-    // overflow:"auto",
+  content:{
+    display:"flex",
+    direction:"row",
   },
-  content: {
-    float:"left",
-    padding: theme.spacing(3),
-    // overflow:"scroll",
+  controlPanel:{
+    display:"block",
+    width: drawerWidth,
+    overflow:"scroll"
+  },
+  gallery: {
+    display:"block",
+    overflow:"scroll"
   },
 }));
 
@@ -48,14 +50,13 @@ export default inject('visImages')(function App() {
           </Typography>
         </Toolbar>
       </AppBar>
-      <div className={classes.controlPanel}>
-      <Toolbar/>
-        <ControlPanel/>
+      <div>
+        <Toolbar/>
+        <div className={classes.content}>
+          <ControlPanel className={classes.controlPanel}/>
+          <ImageGallery className={classes.gallery}/>
+          </div>
       </div>
-      <main className={classes.content}>
-        <Toolbar />
-        <ImageGallery imgList={imgList}/>
-      </main>
     </div>
   );
 })
