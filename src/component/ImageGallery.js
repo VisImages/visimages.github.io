@@ -23,45 +23,70 @@ var minioClient = new Minio.Client({
 });
 
 // console.log(minioClient.getObject('visdata', 'images/1032/3.png'))
+const marginImage = "1%";
+const widthImage = "8%"
+const heightImage = "16%"
+
 
 const styles = theme => ({
   root: {
-    display:"flex",
-    flexDirection:"column",
-    justify:"center",
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
   },
   gallery: {
-    display:"flex",
-    height:"95%",
-    margin:0,
-  },
-  pagenum: {
-    display:"block",
-    // height:"5%",
+    display: "flex",
+    flexWrap: "wrap",
+    height: "95%",
+    // maxHeight:"95%",
   },
   card: {
-    maxWidth: 250,
-    height: "20vh",
-    margin: 5,
+    height: heightImage,
+    width: widthImage,
+    margin: marginImage,
+    zIndex: 0,
   },
   media: {
-    height:140,
+    width: 200,
+    height: 200,
   },
+  pagenum: {
+    display: "flex",
+    justifyContent: "center",
+    height: "5%",
+  },
+  detailView: {
+    display: "block",
+    position: "absolute",
+    left: "25%",
+    top: "25%",
+    zIndex: 2,
+    height: "50%",
+    width: "50%",
+    backgroundColor: "yellow",
+  }
 });
 
 @inject("visImages")
 @observer
 class ImageGallery extends React.Component {
+
   handlePage = (event, page) => {
     console.log(page);
     visImages.pageNum = page;
     visImages.showList = visImages.filteredList.imgList.slice(
-      visImages.showNum * page, 
+      visImages.showNum * page,
       Math.min(
         visImages.filteredList.imgList.length,
         visImages.showNum * (page + 1))
-        );
+    );
     visImages.updateFetchUrls();
+  };
+
+  handleClick = (event, value) => {
+    console.log("click");
+    visImages.detailOn = !visImages.detailOn;
   };
 
   render() {
@@ -69,37 +94,33 @@ class ImageGallery extends React.Component {
 
     return (
       <div className={classes.root}>
+        {visImages.detailOn && 
+        <div className={classes.detailView}/>}
         <div className={classes.gallery}>
           {/* <Grid container> */}
           {visImages.fetchUrls.map((value, index) => {
             // console.log(value)
             return (
-            <Card item className={classes.card}
-              key={index}>
-              <CardActionArea>
-                <CardMedia
-                  className={classes.media}
-                  image={value}
-                />
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Share
-            </Button>
-                <Button size="small" color="primary">
-                  Learn More
-            </Button>
-              </CardActions>
-            </Card>
-          )})}
-        {/* </Grid> */}
+              <Card item className={classes.card}
+                key={index}>
+                <CardActionArea>
+                  <CardMedia
+                    className={classes.media}
+                    image={value}
+                    onClick={this.handleClick}
+                  />
+                </CardActionArea>
+              </Card>
+            )
+          })}
+          {/* </Grid> */}
         </div>
         <div className={classes.pagenum}>
           <Pagination
             page={visImages.pageNum}
             count={Math.floor(
               visImages.filteredList.imgList.length / visImages.showNum)}
-            onChange={this.handlePage}/>
+            onChange={this.handlePage} />
         </div>
       </div>)
   };

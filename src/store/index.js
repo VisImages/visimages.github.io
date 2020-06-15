@@ -18,13 +18,15 @@ class VisImages {
     vizType: [],
   };
 
+  @observable detailOn = false;
+
   @observable paperInfo = {};
   @observable fullAuthorList = [];
   @observable yearIdx = {};
   @observable paper2Idx = {};
   @observable visImgData = {};
 
-  @observable showNum = 20;
+  @observable showNum = 50;
   @observable showList = [];
   @observable pageNum = 1;
 
@@ -105,7 +107,6 @@ class VisImages {
     let imgList = [];
     let paperList = [];
     let authorList = [];
-    const displayNum = 50;
     // without paper specification.
     // console.log(this.filterConditions.paperName === null)
     if (this.filterConditions.paperName === null) {

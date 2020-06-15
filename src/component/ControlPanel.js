@@ -50,6 +50,7 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
     visImages.showList = visImages.filteredList.imgList.slice(
       0,Math.min(visImages.filteredList.imgList.length,
         visImages.showNum));
+        visImages.updateFetchUrls();
   }
 
   const handlePaper = (event, newValue) => {
@@ -65,6 +66,7 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
     visImages.showList = visImages.filteredList.imgList.slice(
       0,Math.min(visImages.filteredList.imgList.length,
         visImages.showNum));
+    visImages.updateFetchUrls();
   }
   const handleAuthor = (event, newValue) => {
     visImages.filterConditions["authorName"] = newValue;
@@ -72,6 +74,7 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
     visImages.showList = visImages.filteredList.imgList.slice(
       0,Math.min(visImages.filteredList.imgList.length,
         visImages.showNum));
+        visImages.updateFetchUrls();
   }
 
   const handleChange = (event) => {
