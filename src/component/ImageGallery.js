@@ -23,9 +23,9 @@ var minioClient = new Minio.Client({
 });
 
 // console.log(minioClient.getObject('visdata', 'images/1032/3.png'))
-const marginImage = "1%";
-const widthImage = "8%"
-const heightImage = "16%"
+const marginImage = "10px";
+const widthNum = 10;
+const heightNum  = 5;
 
 
 const styles = theme => ({
@@ -42,8 +42,8 @@ const styles = theme => ({
     // maxHeight:"95%",
   },
   card: {
-    height: heightImage,
-    width: widthImage,
+    height: `calc(100% / ${heightNum} - 2 * ${marginImage})`,
+    width: `calc(100% / ${widthNum} - 2 * ${marginImage})`,
     margin: marginImage,
     zIndex: 0,
   },
@@ -56,13 +56,23 @@ const styles = theme => ({
     justifyContent: "center",
     height: "5%",
   },
+  backgroundShade:{
+    position:"absolute",
+    left:0,
+    top:0,
+    zIndex: 1,
+    width:"100%",
+    height:"100%",
+    opacity:0.5,
+    backgroundColor: "black",
+  },
   detailView: {
     display: "block",
     position: "absolute",
     left: "25%",
-    top: "25%",
+    top: "20%",
     zIndex: 2,
-    height: "50%",
+    // maxHeight: "50%",
     width: "50%",
     backgroundColor: "yellow",
   }
@@ -84,18 +94,23 @@ class ImageGallery extends React.Component {
     visImages.updateFetchUrls();
   };
 
-  handleClick = (event, value) => {
-    console.log("click");
+  handleClick = (id) => {
+    console.log(id);
+    console.log(this.props);
     visImages.detailOn = !visImages.detailOn;
+    visImages.detailurl = id.url;
   };
 
   render() {
     const { classes } = this.props;
+    let handleClick = this.handleClick;
 
     return (
       <div className={classes.root}>
         {visImages.detailOn && 
-        <div className={classes.detailView}/>}
+        <div className={classes.backgroundShade} onClick = {this.handleClick}/>}
+        {visImages.detailOn && 
+        <img className={classes.detailView} src={visImages.detailurl}/>}
         <div className={classes.gallery}>
           {/* <Grid container> */}
           {visImages.fetchUrls.map((value, index) => {
@@ -105,9 +120,10 @@ class ImageGallery extends React.Component {
                 key={index}>
                 <CardActionArea>
                   <CardMedia
+                    id={index}
                     className={classes.media}
                     image={value}
-                    onClick={this.handleClick}
+                    onClick={this.handleClick.bind(this,{id:index,url:value})}
                   />
                 </CardActionArea>
               </Card>

@@ -19,6 +19,7 @@ class VisImages {
   };
 
   @observable detailOn = false;
+  @observable detailurl = "";
 
   @observable paperInfo = {};
   @observable fullAuthorList = [];
