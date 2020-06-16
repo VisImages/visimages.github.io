@@ -2,13 +2,8 @@ import React from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Pagination from '@material-ui/lab/Pagination';
-import Grid from '@material-ui/core/Grid';
 import { inject, observer } from 'mobx-react';
 import visImages from '../store';
 // import Minio from 'minio'
@@ -94,11 +89,15 @@ class ImageGallery extends React.Component {
     visImages.updateFetchUrls();
   };
 
-  handleClick = (id) => {
-    console.log(id);
-    console.log(this.props);
+  handleClick = (value) => {
+    // console.log("id", value);
+    // console.log(visImages.getBoundingBoxes(value.pid, value.iid))
     visImages.detailOn = !visImages.detailOn;
-    visImages.detailurl = id.url;
+    visImages.detailurl = value.url;
+  };
+
+  handleRestore = (value) => {
+    visImages.detailOn = !visImages.detailOn;
   };
 
   render() {
@@ -108,7 +107,7 @@ class ImageGallery extends React.Component {
     return (
       <div className={classes.root}>
         {visImages.detailOn && 
-        <div className={classes.backgroundShade} onClick = {this.handleClick}/>}
+        <div className={classes.backgroundShade} onClick = {this.handleRestore}/>}
         {visImages.detailOn && 
         <img className={classes.detailView} src={visImages.detailurl}/>}
         <div className={classes.gallery}>
@@ -122,8 +121,8 @@ class ImageGallery extends React.Component {
                   <CardMedia
                     id={index}
                     className={classes.media}
-                    image={value}
-                    onClick={this.handleClick.bind(this,{id:index,url:value})}
+                    image={value.url}
+                    onClick={this.handleClick.bind(this,value)}
                   />
                 </CardActionArea>
               </Card>

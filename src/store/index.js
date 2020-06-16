@@ -98,10 +98,17 @@ class VisImages {
       imgId = parseInt(imgId)
       minioClient.presignedUrl('GET', 'visdata', `images/${paperId}/${imgId}.png`, 24 * 60 * 60,
         (err, presignedUrl) => {
-          urls.push(presignedUrl);
+          urls.push({
+            pid:paperId,
+            iid:imgId,
+            url:presignedUrl});
           if (urls.length === this.showList.length) this.changeFetchUrls(urls)
         })
     }
+  }
+
+  getBoundingBoxes(paperId, imgId){
+    return this.visImgData[paperId.toString()][imgId];
   }
 
   @computed get filteredList() {
