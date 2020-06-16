@@ -27,7 +27,7 @@ class VisImages {
   @observable paper2Idx = {};
   @observable visImgData = {};
 
-  @observable showNum = 50;
+  @observable showNum = 80;
   @observable showList = [];
   @observable pageNum = 1;
 

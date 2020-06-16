@@ -23,9 +23,9 @@ var minioClient = new Minio.Client({
 });
 
 // console.log(minioClient.getObject('visdata', 'images/1032/3.png'))
-const marginImage = "10px";
+const marginImage = "15px";
 const widthNum = 10;
-const heightNum  = 5;
+const heightNum  = 8;
 
 
 const styles = theme => ({
@@ -48,8 +48,8 @@ const styles = theme => ({
     zIndex: 0,
   },
   media: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
   },
   pagenum: {
     display: "flex",
