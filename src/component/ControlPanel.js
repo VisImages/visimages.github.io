@@ -48,7 +48,7 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
 
   const handleYear = (event, newValue) => {
     console.log("axios");
-    const response = fetch('https://127.0.0.1:5000/filtering', {
+    const response = fetch('127.0.0.1:5000/filtering', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ example: 'data' }),
