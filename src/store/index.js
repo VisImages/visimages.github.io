@@ -1,7 +1,7 @@
 import { observable, action, computed } from "mobx";
 
 
-var Minio = require('minio');
+let Minio = require('minio');
 
 var minioClient = new Minio.Client({
   endPoint: 'minio.zjvis.org',
@@ -20,6 +20,7 @@ class VisImages {
 
   @observable detailOn = false;
   @observable detailurl = "";
+  @observable detailInfo = [];
 
   @observable paperInfo = {};
   @observable fullAuthorList = [];
@@ -108,7 +109,25 @@ class VisImages {
   }
 
   getBoundingBoxes(paperId, imgId){
-    return this.visImgData[paperId.toString()][imgId];
+    let bboxes = [];
+    const imgdata = this.visImgData[paperId.toString()][imgId];
+    console.log(imgdata);
+    for(const visType in imgdata.visualization_bbox){
+      for (let i = 0; 
+        i < imgdata.visualization_bbox[visType].length;
+        i++)
+        {
+          bboxes.push(
+            {
+              visType:visType,
+              box:imgdata.visualization_bbox[visType][i],
+              idx:i+1,
+              visibility:"visible",
+            }
+          )
+        }
+    }
+    return bboxes;
   }
 
   @computed get filteredList() {

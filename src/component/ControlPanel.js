@@ -14,6 +14,8 @@ import Divider from '@material-ui/core/Divider';
 import {inject, observer} from 'mobx-react';
 import {observable} from 'mobx';
 
+let axios = require('axios')
+
 const filter = createFilterOptions();
 
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +47,13 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
   });
 
   const handleYear = (event, newValue) => {
+    console.log("axios");
+    const response = fetch('https://127.0.0.1:5000/filtering', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ example: 'data' }),
+    })
+    console.log(response.data);
     visImages.filterConditions["year"] = newValue;
     visImages.pageNum = 1;
     visImages.showList = visImages.filteredList.imgList.slice(

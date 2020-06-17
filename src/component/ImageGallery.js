@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Pagination from '@material-ui/lab/Pagination';
+import DetailView from './DetailView'
 import { inject, observer } from 'mobx-react';
 import visImages from '../store';
 // import Minio from 'minio'
@@ -18,7 +19,7 @@ var minioClient = new Minio.Client({
 });
 
 // console.log(minioClient.getObject('visdata', 'images/1032/3.png'))
-const marginImage = "15px";
+const marginImage = "10px";
 const widthNum = 10;
 const heightNum  = 8;
 
@@ -69,7 +70,7 @@ const styles = theme => ({
     zIndex: 2,
     // maxHeight: "50%",
     width: "50%",
-    backgroundColor: "yellow",
+    backgroundColor: "white",
   }
 });
 
@@ -91,9 +92,10 @@ class ImageGallery extends React.Component {
 
   handleClick = (value) => {
     // console.log("id", value);
-    // console.log(visImages.getBoundingBoxes(value.pid, value.iid))
+    console.log(visImages.getBoundingBoxes(value.pid, value.iid))
     visImages.detailOn = !visImages.detailOn;
-    visImages.detailurl = value.url;
+    visImages.detailUrl = value.url;
+    visImages.detailInfo = visImages.getBoundingBoxes(value.pid, value.iid)
   };
 
   handleRestore = (value) => {
@@ -102,14 +104,15 @@ class ImageGallery extends React.Component {
 
   render() {
     const { classes } = this.props;
-    let handleClick = this.handleClick;
 
     return (
       <div className={classes.root}>
         {visImages.detailOn && 
         <div className={classes.backgroundShade} onClick = {this.handleRestore}/>}
         {visImages.detailOn && 
-        <img className={classes.detailView} src={visImages.detailurl}/>}
+        <div className={classes.detailView}>
+          <DetailView/>
+          </div>}
         <div className={classes.gallery}>
           {/* <Grid container> */}
           {visImages.fetchUrls.map((value, index) => {
