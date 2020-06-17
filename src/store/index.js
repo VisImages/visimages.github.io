@@ -15,7 +15,7 @@ class VisImages {
     paperName: null,
     authorName: [],
     authorNameLogic: "or",
-    vizType: [],
+    visType: [],
   };
 
   @observable detailOn = false;
