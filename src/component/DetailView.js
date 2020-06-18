@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import {ColorStyles} from './Categories';
+import {ColorStyles, TextTranslate} from './Categories';
 import { inject, observer } from 'mobx-react';
 import visImages from '../store';
 
@@ -16,10 +16,12 @@ const styles = theme => ({
     display: "flex",
     flexDirection: "row",
     // zIndex: 3,
+    alignItems:"center",
     width: "100%",
     height: "100%",
   },
   imgView: {
+    display:"block",
     position: "relative",
     width: "60%",
     height:"fit-content",
@@ -38,11 +40,10 @@ const styles = theme => ({
     padding:"20px",
     display: "flex",
     flexDirection:"column",
-    justify:"between-center",
     flexWrap:"wrap",
     position: "relative",
     width: "40%",
-    height:"600px",
+    height:"fit-content",
     overflow:"scroll"
   }
 });
@@ -122,7 +123,7 @@ class DetailView extends React.Component {
                     onChange={this.handleChange.bind(this,{index:index})}
                     index={index}
                     name={value.visType} />}
-                  label={value.visType}
+                  label={TextTranslate[value.visType]}
                 />)
               })}
           </FormGroup>

@@ -65,7 +65,7 @@ class VisImages {
   }
 
   @action
-  fetchFilteredData() {
+  fetchFilteredData(yearControl = false) {
     fetch('http://127.0.0.1:5000/filtering', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -74,7 +74,9 @@ class VisImages {
       .then(data => {
         console.log(data);
         this.fetchedData = data;
-        this.yearInt = data.year;
+        if(!yearControl){
+          this.yearInt = data.year;
+        }
         this.pageNum = 1;
         this.showList = this.fetchedData.imgList.slice(
           0, Math.min(this.fetchedData.imgList.length,

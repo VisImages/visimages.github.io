@@ -8,7 +8,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import {TextTranslate} from './Categories'
+import { TextTranslate } from './Categories'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
@@ -24,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    overflow: "scroll",
+    height: "100%",
   },
   element_holder: {
     width: '100%',
@@ -41,20 +43,11 @@ const useStyles = makeStyles((theme) => ({
 export default inject('visImages')(observer(function ControlPanel({ visImages }) {
   const classes = useStyles();
 
-  const [sstate, ssetState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
-  });
 
   const handleYear = (event, newValue) => {
     visImages.yearInt = newValue;
     visImages.filterConditions["year"] = newValue;
-    visImages.fetchFilteredData();
-    visImages.showList = visImages.fetchedData.imgList.slice(
-      0, Math.min(visImages.fetchedData.imgList.length,
-        visImages.showNum));
-    visImages.updateFetchUrls();
+    visImages.fetchFilteredData(true);
   }
 
   const handlePaper = (event, newValue) => {
@@ -74,11 +67,56 @@ export default inject('visImages')(observer(function ControlPanel({ visImages })
   }
 
   const handleVisType = (event) => {
-    ssetState({ ...sstate, [event.target.name]: event.target.checked });
+    if (event.target.name === "allTypes") {
+      visImages.filterConditions.allTypes = !visImages.filterConditions.allTypes;
+      if (visImages.filterConditions.allTypes){
+        visImages.filterConditions.allAnnotated = false;
+        visImages.filterConditions.visType = [];
+      }
+    }
+    else if (event.target.name === "allAnnotated") {
+      visImages.filterConditions.allAnnotated = !visImages.filterConditions.allAnnotated;
+      if (visImages.filterConditions.allAnnotated){
+        visImages.filterConditions.allTypes = false;
+        visImages.filterConditions.visType = Object.keys(TextTranslate);
+      }
+      else{
+        visImages.filterConditions.visType = [];
+        visImages.filterConditions.allTypes = true;
+      }
+    }
+    else {
+      const { visType } = visImages.filterConditions;
+      const index = visType.indexOf(event.target.name);
+      if (index === -1) {
+        visImages.filterConditions.visType.push(event.target.name);
+        if (visImages.filterConditions.visType.length === 30){
+          visImages.filterConditions.allAnnotated = true;
+        }
+        if(visImages.filterConditions.allTypes){
+          visImages.filterConditions.allTypes = false;
+        }
+      }
+      else {
+        visImages.filterConditions.visType.splice(index, 1);
+        if (visImages.filterConditions.allAnnotated){
+          visImages.filterConditions.allAnnotated = false;
+        }
+        if (visImages.filterConditions.visType.length === 0){
+          visImages.filterConditions.allTypes = true;
+        }
+      }
+    }
+    visImages.fetchFilteredData();
+    // ssetState({ ...sstate, [event.target.name]: event.target.checked });
   };
 
+  const checkedType = (visType) => {
+    if (visType === "allTypes") return visImages.filterConditions.allTypes;
+    else if (visType === "allAnnotated") return visImages.filterConditions.allAnnotated;
+    else return visImages.filterConditions.visType.indexOf(visType) === -1 ? false : true;
+  }
 
-  const { gilad, jason, antoine } = sstate;
   console.log(visImages.filterConditions.year)
   return (
     <div className={classes.root}>
@@ -173,12 +211,20 @@ export default inject('visImages')(observer(function ControlPanel({ visImages })
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">Visualization types</FormLabel>
           <FormGroup>
+            <FormControlLabel
+              control={<Checkbox checked={checkedType("allTypes")} onChange={handleVisType} name={"allTypes"} />}
+              label={"all images"}
+            />
+            <FormControlLabel
+              control={<Checkbox checked={checkedType("allAnnotated")} onChange={handleVisType} name={"allAnnotated"} />}
+              label={"all annotated images"}
+            />
             {
               Object.keys(TextTranslate).map((value, index) => {
                 return (<FormControlLabel
-              control={<Checkbox checked={jason} onChange={handleVisType} name={value} />}
-              label={TextTranslate[value]}
-            />)
+                  control={<Checkbox checked={checkedType(value)} onChange={handleVisType} name={value} />}
+                  label={TextTranslate[value]}
+                />)
               })
             }
           </FormGroup>

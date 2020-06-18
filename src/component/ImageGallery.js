@@ -21,7 +21,7 @@ var minioClient = new Minio.Client({
 // console.log(minioClient.getObject('visdata', 'images/1032/3.png'))
 const marginImage = "10px";
 const widthNum = 10;
-const heightNum  = 8;
+const heightNum = 8;
 
 
 const styles = theme => ({
@@ -35,6 +35,7 @@ const styles = theme => ({
     display: "flex",
     flexWrap: "wrap",
     height: "95%",
+    alignContent: "baseline",
     // maxHeight:"95%",
   },
   card: {
@@ -52,14 +53,14 @@ const styles = theme => ({
     justifyContent: "center",
     height: "5%",
   },
-  backgroundShade:{
-    position:"absolute",
-    left:0,
-    top:0,
+  backgroundShade: {
+    position: "absolute",
+    left: 0,
+    top: 0,
     zIndex: 1,
-    width:"100%",
-    height:"100%",
-    opacity:0.5,
+    width: "100%",
+    height: "100%",
+    opacity: 0.5,
     backgroundColor: "black",
   },
   detailView: {
@@ -68,7 +69,7 @@ const styles = theme => ({
     left: "25%",
     top: "20%",
     zIndex: 2,
-    // maxHeight: "50%",
+    height: "fit-content",
     width: "50%",
     backgroundColor: "white",
   }
@@ -82,10 +83,10 @@ class ImageGallery extends React.Component {
     console.log(page);
     visImages.pageNum = page;
     visImages.showList = visImages.fetchedData.imgList.slice(
-      visImages.showNum * page,
+      visImages.showNum * (page - 1),
       Math.min(
         visImages.fetchedData.imgList.length,
-        visImages.showNum * (page + 1))
+        visImages.showNum * page)
     );
     visImages.updateFetchUrls();
   };
@@ -107,11 +108,11 @@ class ImageGallery extends React.Component {
 
     return (
       <div className={classes.root}>
-        {visImages.detailOn && 
-        <div className={classes.backgroundShade} onClick = {this.handleRestore}/>}
-        {visImages.detailOn && 
-        <div className={classes.detailView}>
-          <DetailView/>
+        {visImages.detailOn &&
+          <div className={classes.backgroundShade} onClick={this.handleRestore} />}
+        {visImages.detailOn &&
+          <div className={classes.detailView}>
+            <DetailView />
           </div>}
         <div className={classes.gallery}>
           {/* <Grid container> */}
@@ -125,7 +126,7 @@ class ImageGallery extends React.Component {
                     id={index}
                     className={classes.media}
                     image={value.url}
-                    onClick={this.handleClick.bind(this,value)}
+                    onClick={this.handleClick.bind(this, value)}
                   />
                 </CardActionArea>
               </Card>
@@ -136,7 +137,7 @@ class ImageGallery extends React.Component {
         <div className={classes.pagenum}>
           <Pagination
             page={visImages.pageNum}
-            count={Math.floor(
+            count={Math.ceil(
               visImages.fetchedData.imgList.length / visImages.showNum)}
             onChange={this.handlePage} />
         </div>
