@@ -14,9 +14,17 @@ class VisImages {
     year: [],
     paperName: null,
     authorName: [],
-    authorNameLogic: "or",
+    authorLogic: "or",
     visType: [],
+    allTypes:true,
+    allAnnotated:false
   };
+
+  @observable fetchedData = {
+    imgList:[],
+    paperList:[],
+    authorList:[]
+  }
 
   @observable detailOn = false;
   @observable detailurl = "";
@@ -130,6 +138,16 @@ class VisImages {
     return bboxes;
   }
 
+  @action
+  fetchFilteredData(){
+    fetch('http://127.0.0.1:5000/filtering', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.filterConditions),
+    }).then(response => response.json())
+    .then(data => this.fetchedData = data);
+  }
+
   @computed get filteredList() {
     let imgList = [];
     let paperList = [];
@@ -158,7 +176,7 @@ class VisImages {
             if (this.filterConditions.authorName.length === 0) {
               authorValid = true;
             }
-            else if (this.filterConditions.authorNameLogic === "or") {
+            else if (this.filterConditions.authorLogic === "or") {
               for (let authorIdx = 0;
                 authorIdx < this.filterConditions.authorName.length;
                 authorIdx++) {
@@ -169,7 +187,7 @@ class VisImages {
                 }
               }
             }
-            else if (this.filterConditions.authorNameLogic === "and") {
+            else if (this.filterConditions.authorLogic === "and") {
               for (let authorIdx = 0;
                 authorIdx < this.filterConditions.authorName.length;
                 authorIdx++) {
@@ -200,9 +218,7 @@ class VisImages {
     return {
       "imgList": imgList,
       "paperList": paperList,
-      "authorList": authorList,
-      "pageNum":0,
-      "pageAmount":20
+      "authorList": authorList
     }
   };
 };

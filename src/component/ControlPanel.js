@@ -47,20 +47,6 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
   });
 
   const handleYear = (event, newValue) => {
-    fetch('http://127.0.0.1:5000/filtering', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        paper:visImages.filterConditions.paper,
-        year:newValue,
-        authors:visImages.filterConditions.authorName,
-        authorLogic:visImages.filterConditions.authorNameLogic,
-        visType:visImages.filterConditions.visType,
-        allTypes:true,
-        allAnnotated:false
-       }),
-    }).then(response => response.json())
-    .then(data => console.log(data));
     visImages.filterConditions["year"] = newValue;
     visImages.pageNum = 1;
     visImages.showList = visImages.filteredList.imgList.slice(
@@ -71,15 +57,13 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
 
   const handlePaper = (event, newValue) => {
     if (typeof newValue === 'string') {
-      console.log(newValue);
+      console.log("1",newValue);
       visImages.filterConditions["paperName"] = newValue;
-    } else if (newValue && newValue.inputValue) {
-      // Create a new value from the user input
-      console.log(newValue.inputValue);
-      visImages.filterConditions["paperName"] = newValue.inputValue;
     } else {
+      console.log("3",newValue);
       visImages.filterConditions["paperName"] = newValue;
     }
+
     visImages.pageNum = 1;
     visImages.showList = visImages.filteredList.imgList.slice(
       0,Math.min(visImages.filteredList.imgList.length,
