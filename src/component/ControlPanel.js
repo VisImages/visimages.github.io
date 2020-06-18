@@ -8,11 +8,12 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import {TextTranslate} from './Categories'
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import Divider from '@material-ui/core/Divider';
-import {inject, observer} from 'mobx-react';
-import {observable} from 'mobx';
+import { inject, observer } from 'mobx-react';
+import { observable } from 'mobx';
 
 let axios = require('axios')
 
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default inject('visImages')(observer(function ControlPanel({visImages}) {
+export default inject('visImages')(observer(function ControlPanel({ visImages }) {
   const classes = useStyles();
 
   const [sstate, ssetState] = React.useState({
@@ -47,39 +48,32 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
   });
 
   const handleYear = (event, newValue) => {
+    visImages.yearInt = newValue;
     visImages.filterConditions["year"] = newValue;
-    visImages.pageNum = 1;
-    visImages.showList = visImages.filteredList.imgList.slice(
-      0,Math.min(visImages.filteredList.imgList.length,
+    visImages.fetchFilteredData();
+    visImages.showList = visImages.fetchedData.imgList.slice(
+      0, Math.min(visImages.fetchedData.imgList.length,
         visImages.showNum));
-        visImages.updateFetchUrls();
+    visImages.updateFetchUrls();
   }
 
   const handlePaper = (event, newValue) => {
     if (typeof newValue === 'string') {
-      console.log("1",newValue);
+      console.log("1", newValue);
       visImages.filterConditions["paperName"] = newValue;
     } else {
-      console.log("3",newValue);
+      console.log("3", newValue);
       visImages.filterConditions["paperName"] = newValue;
     }
-
-    visImages.pageNum = 1;
-    visImages.showList = visImages.filteredList.imgList.slice(
-      0,Math.min(visImages.filteredList.imgList.length,
-        visImages.showNum));
-    visImages.updateFetchUrls();
+    visImages.fetchFilteredData();
+    // visImages.updateFetchUrls();
   }
   const handleAuthor = (event, newValue) => {
     visImages.filterConditions["authorName"] = newValue;
-    visImages.pageNum = 1;
-    visImages.showList = visImages.filteredList.imgList.slice(
-      0,Math.min(visImages.filteredList.imgList.length,
-        visImages.showNum));
-        visImages.updateFetchUrls();
+    visImages.fetchFilteredData();
   }
 
-  const handleChange = (event) => {
+  const handleVisType = (event) => {
     ssetState({ ...sstate, [event.target.name]: event.target.checked });
   };
 
@@ -88,16 +82,16 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
   console.log(visImages.filterConditions.year)
   return (
     <div className={classes.root}>
-      <div className={classes.element_holder} key = "vis-number">
+      <div className={classes.element_holder} key="vis-number">
         <Typography id="number-title" gutterBottom>
           Image Amount
         </Typography>
         <Typography id="number" align="center">
-          {visImages.filteredList.imgList.length}
+          {visImages.fetchedData.imgList.length}
         </Typography>
-        <Divider/>
+        <Divider />
       </div>
-      <div className={classes.element_holder} key = "paper-input">
+      <div className={classes.element_holder} key="paper-input">
         <Autocomplete
           value={visImages.filterConditions["paperName"]}
           onChange={handlePaper}
@@ -109,7 +103,7 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
           clearOnBlur
           handleHomeEndKeys
           id="free-solo-with-text-demo"
-          options={visImages.filteredList.paperList}
+          options={visImages.fetchedData.paperList}
           getOptionLabel={(option) => {
             // Value selected with enter, right from the input
             if (typeof option === 'string') {
@@ -122,7 +116,7 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
             // Regular option
             return option.title;
           }}
-          renderOption={(option)=>{
+          renderOption={(option) => {
             if (typeof option === 'string') {
               return option;
             }
@@ -131,38 +125,38 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
           style={{ width: 300 }}
           freeSolo
           renderInput={(params) => (
-            <TextField {...params} label="Paper title" variant="outlined" fontSize="2px"/>
+            <TextField {...params} label="Paper title" variant="outlined" fontSize="2px" />
           )}
         />
       </div>
-      <div className={classes.element_holder} key = "year-slider">
+      <div className={classes.element_holder} key="year-slider">
         <Typography id="continuous-slider1" gutterBottom>
           Year
         </Typography>
         <Slider
-          value={visImages.filterConditions.year}
+          value={visImages.yearInt}
           valueLabelDisplay="auto"
           aria-labelledby="range-slider"
           onChange={handleYear}
           marks={[
             {
-              value:visImages.yearInt[0],
-              label:visImages.yearInt[0],
+              value: visImages.fetchedData.minYear,
+              label: visImages.fetchedData.minYear,
             },
             {
-              value:visImages.yearInt[1],
-              label:visImages.yearInt[1],
+              value: visImages.fetchedData.maxYear,
+              label: visImages.fetchedData.maxYear,
             }
           ]}
-          min={visImages.yearInt[0]}
-          max={visImages.yearInt[1]}
+          min={visImages.fetchedData.minYear}
+          max={visImages.fetchedData.maxYear}
         />
       </div>
-      <div className={classes.element_holder} key = "author-selector">
+      <div className={classes.element_holder} key="author-selector">
         <Autocomplete
           multiple
           id="tags-standard"
-          options={visImages.filteredList.authorList}
+          options={visImages.fetchedData.authorList}
           onChange={handleAuthor}
           // getOptionLabel={(option) => option.title}
           defaultValue={[]}
@@ -175,20 +169,19 @@ export default inject('visImages')(observer(function ControlPanel({visImages}) {
           )}
         />
       </div>
-      <div className={classes.element_holder} key = "type-selector">
+      <div className={classes.element_holder} key="type-selector">
         <FormControl component="fieldset" className={classes.formControl}>
           <FormLabel component="legend">Visualization types</FormLabel>
           <FormGroup>
-            <FormControlLabel
-              control={<Checkbox checked={jason} onChange={handleChange} name="jason" />}
-              label="Line chart"
-            />
-            <FormControlLabel
-              control={<Checkbox checked={antoine} onChange={handleChange} name="antoine" />}
-              label="Scatterplot"
-            />
+            {
+              Object.keys(TextTranslate).map((value, index) => {
+                return (<FormControlLabel
+              control={<Checkbox checked={jason} onChange={handleVisType} name={value} />}
+              label={TextTranslate[value]}
+            />)
+              })
+            }
           </FormGroup>
-          <FormHelperText>Be careful</FormHelperText>
         </FormControl>
       </div>
     </div>

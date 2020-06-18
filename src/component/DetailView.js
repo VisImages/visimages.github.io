@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import ColorStyles from './ColorStyles';
+import {ColorStyles} from './Categories';
 import { inject, observer } from 'mobx-react';
 import visImages from '../store';
 

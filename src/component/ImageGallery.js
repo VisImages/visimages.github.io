@@ -81,10 +81,10 @@ class ImageGallery extends React.Component {
   handlePage = (event, page) => {
     console.log(page);
     visImages.pageNum = page;
-    visImages.showList = visImages.filteredList.imgList.slice(
+    visImages.showList = visImages.fetchedData.imgList.slice(
       visImages.showNum * page,
       Math.min(
-        visImages.filteredList.imgList.length,
+        visImages.fetchedData.imgList.length,
         visImages.showNum * (page + 1))
     );
     visImages.updateFetchUrls();
@@ -92,10 +92,10 @@ class ImageGallery extends React.Component {
 
   handleClick = (value) => {
     // console.log("id", value);
-    console.log(visImages.getBoundingBoxes(value.pid, value.iid))
+    // console.log(visImages.getBoundingBoxes(value.pid, value.iid))
     visImages.detailOn = !visImages.detailOn;
     visImages.detailUrl = value.url;
-    visImages.detailInfo = visImages.getBoundingBoxes(value.pid, value.iid)
+    visImages.getBoundingBoxes(value.pid, value.iid);
   };
 
   handleRestore = (value) => {
@@ -137,7 +137,7 @@ class ImageGallery extends React.Component {
           <Pagination
             page={visImages.pageNum}
             count={Math.floor(
-              visImages.filteredList.imgList.length / visImages.showNum)}
+              visImages.fetchedData.imgList.length / visImages.showNum)}
             onChange={this.handlePage} />
         </div>
       </div>)
