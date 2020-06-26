@@ -7,8 +7,8 @@ class VisImages {
     authorName: [],
     authorLogic: "or",
     visType: [],
-    allTypes: true,
-    allAnnotated: false
+    allTypes: false,
+    allAnnotated: true
   };
 
   @observable fetchedData = {
@@ -25,7 +25,7 @@ class VisImages {
   @observable detailInfo = [];
 
   @observable yearInt = []
-  @observable showNum = 80;
+  @observable showNum = 40;
   @observable showList = [];
   @observable pageNum = 1;
 

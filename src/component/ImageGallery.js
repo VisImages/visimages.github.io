@@ -20,8 +20,8 @@ var minioClient = new Minio.Client({
 
 // console.log(minioClient.getObject('visdata', 'images/1032/3.png'))
 const marginImage = "10px";
-const widthNum = 10;
-const heightNum = 8;
+const widthNum = 8;
+const heightNum = 5;
 
 
 const styles = theme => ({
