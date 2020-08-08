@@ -28,7 +28,8 @@ const ColorStyles = {
     'tree': "#BE7261",
     'treemap': "#A5503C",
     'hierarchical_edge_bundling': "#872D18",
-    'sunburst_icicle': "#6F1702"
+    'sunburst_icicle': "#6F1702",
+    'NoVis': 'black',
 }
 
 const TextTranslate = {
@@ -40,29 +41,30 @@ const TextTranslate = {
     'graph': 'graph',
     'map': 'map',
     'bar_chart': 'bar chart',
-    'small_multiple': 'small multiple', 
-    'matrix': 'matrix', 
-    'flow_diagram': 'flow diagram', 
-    'table': 'table', 
-    'sunburst_icicle': 'sunburst icicle', 
-    'parallel_coordinate': 'parallel coordinate', 
-    'box_plot': 'box plot', 
-    'error_bar': 'error bar', 
-    'glyph_based': 'glyph based', 
-    'area_chart': 'area chart', 
-    'pie_chart': 'pie chart', 
-    'sector_chart': 'sector chart', 
-    'word_cloud': 'word cloud', 
-    'proportional_area_chart': 
-    'proportional area chart', 
-    'unit_visualization': 'unit visualization', 
-    'donut_chart': 'donut chart', 
-    'sankey_diagram': 'sankey diagram', 
-    'hierarchical_edge_bundling': 'hierarchical edge bundling', 
-    'chord_diagram': 'chord diagram', 
-    'stripe_graph': 'stripe graph', 
-    'polar_plot': 'polar plot', 
-    'storyline': 'storyline'
+    'small_multiple': 'small multiple',
+    'matrix': 'matrix',
+    'flow_diagram': 'flow diagram',
+    'table': 'table',
+    'sunburst_icicle': 'sunburst icicle',
+    'parallel_coordinate': 'parallel coordinate',
+    'box_plot': 'box plot',
+    'error_bar': 'error bar',
+    'glyph_based': 'glyph based',
+    'area_chart': 'area chart',
+    'pie_chart': 'pie chart',
+    'sector_chart': 'sector chart',
+    'word_cloud': 'word cloud',
+    'proportional_area_chart':
+    'proportional area chart',
+    'unit_visualization': 'unit visualization',
+    'donut_chart': 'donut chart',
+    'sankey_diagram': 'sankey diagram',
+    'hierarchical_edge_bundling': 'hierarchical edge bundling',
+    'chord_diagram': 'chord diagram',
+    'stripe_graph': 'stripe graph',
+    'polar_plot': 'polar plot',
+    'storyline': 'storyline',
+    'NoVis': 'no visualization'
 }
 
 export {ColorStyles, TextTranslate};

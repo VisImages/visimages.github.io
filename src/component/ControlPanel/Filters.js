@@ -37,6 +37,7 @@ function Filters({title, value, d, size='normal'}) {
         <Autocomplete
           className={classes.autocomplete}
           multiple
+          size={'small'}
           options={filteredFilters}
           onChange={(e, newValue) => {d.updateFilter(value, newValue)}}
           disableCloseOnSelect

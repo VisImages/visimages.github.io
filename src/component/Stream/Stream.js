@@ -1,6 +1,7 @@
 import React from 'react';
 import {makeStyles} from "@material-ui/core";
 import {inject, observer} from "mobx-react";
+import {ColorStyles, TextTranslate} from "../../store/Categories";
 import ReactEcharts from 'echarts-for-react';
 
 const useStyles = makeStyles(theme => ({
@@ -18,7 +19,14 @@ const useStyles = makeStyles(theme => ({
 
 function Stream({d}) {
     const classes = useStyles();
-    const {min, max, categories, stream} = d.stream;
+    const allCategories = Object.keys(ColorStyles);
+    let {min, max, categories, stream} = d.stream;
+    categories = categories.sort((a, b) => allCategories.indexOf(a) - allCategories.indexOf(b));
+    stream = stream.sort((a, b) => {
+        const ai = categories.indexOf(a[2]), bi = categories.indexOf(b[2]);
+        if (ai !== bi) return ai - bi;
+        return a[0] - b[0];
+    })
 
     const getOption = () => {
         return {
@@ -35,8 +43,10 @@ function Stream({d}) {
                 }
             },
             legend: {
+                formatter: name => TextTranslate[name],
                 data: categories,
             },
+            color: categories.map(cat => ColorStyles[cat]),
             singleAxis: {
                 top: 50,
                 bottom: 50,

@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
     },
     gridList: {
         position: 'absolute',
-        top: 60,
+        top: 50,
         width: `calc(100% - ${theme.spacing(1)}px)`,
-        height: 'calc(100% - 60px)',
+        height: 'calc(100% - 50px)',
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
         transform: 'translateZ(0)',
     },

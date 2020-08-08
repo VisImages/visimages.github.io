@@ -5,6 +5,7 @@ import {
     Checkbox,
     TextField
 } from "@material-ui/core";
+import {TextTranslate} from "../../store/Categories";
 import {inject, observer} from "mobx-react";
 import {Autocomplete} from "@material-ui/lab";
 
@@ -53,6 +54,7 @@ function VisCatFilters({d}) {
         <Autocomplete
           className={classes.autocomplete}
           multiple
+          size={'small'}
           limitTags={3}
           options={filteredFilters}
           value={d.filterCategories}
@@ -64,7 +66,7 @@ function VisCatFilters({d}) {
                   style={{ marginRight: 8 }}
                   checked={selected}
                 />
-                {option}
+                {TextTranslate[option]}
             </React.Fragment>
           )}
           renderInput={(params) => (
