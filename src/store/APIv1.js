@@ -18,6 +18,11 @@ class APIv1 {
         this.fetch(req, cb)
     }
 
+    getBBox = (pid, iid, cb = null) => {
+        const req = new Request(url(`/bbox/${pid}/${iid}`));
+        this.fetch(req, cb);
+    }
+
     fetch = (req, cb) => {
         fetch(req)
           .then(res => res.json())

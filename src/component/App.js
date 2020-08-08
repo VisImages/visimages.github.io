@@ -5,6 +5,7 @@ import ControlPanel from "./ControlPanel/ControlPanel";
 import Gallery from "./Gallery/Gallery";
 import Stream from "./Stream/Stream";
 import WordCloud from "./WordCloud/WordCloud";
+import DetailView from "./DetailView/DetailView";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -26,6 +27,7 @@ export default function App() {
             <Gallery/>
             <Stream/>
             <WordCloud/>
+            <DetailView/>
         </div>
     </div>;
 }

@@ -258,6 +258,9 @@ class Data {
         }));
     }
 
+    @observable boxes = null;
+    @action updateBBoxes = boxes => this.boxes = boxes;
+
     updateImageCaptionStat = () => {
         this.images.forEach(img => {
             img.captionStat = captionStat(img.caption);

@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function Gallery({d}) {
+function Gallery({sys, d}) {
     const classes = useStyles();
     const cntPerPage = 20;
     const [page, setPage] = useState(1);
@@ -75,7 +75,10 @@ function Gallery({d}) {
             {
                 d.showedImages
                   .slice((page - 1) * cntPerPage, page * cntPerPage)
-                  .map((img, iid) => <GridListTile key={`${img.pid},${img.iid}`} cols={1} rows={1}>
+                  .map(img => <GridListTile key={`${img.pid},${img.iid}`}
+                                            cols={1} rows={1}
+                                            style={{cursor: 'pointer'}}
+                                            onClick={() => sys.showDetail(img.pid, img.iid, img.src)}>
                       <img src={img.src} alt={img.src}/>
                       <GridListTileBar
                         title={img.src}
@@ -89,4 +92,4 @@ function Gallery({d}) {
     </div>
 }
 
-export default inject('d')(observer(Gallery));
+export default inject('d', 'sys')(observer(Gallery));
