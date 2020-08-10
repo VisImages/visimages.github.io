@@ -2,7 +2,7 @@ import React from 'react';
 import {makeStyles} from "@material-ui/core";
 import {observer} from "mobx-react";
 import Typography from "@material-ui/core/Typography";
-import logo from './logo.png';
+import logo from './logo.svg';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         left: 0,
         top: 0,
         borderBottomRightRadius: theme.spacing(0.5),
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.primary.dark,
 
         display: 'flex',
         alignItems: 'center',

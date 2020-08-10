@@ -14,7 +14,7 @@ class SystemStatus {
         spacing: 10,
         palette: {
             primary: {main: '#dadbdc'},
-            secondary: {main: '#1d2088'}
+            secondary: {main: '#1f5886'}
         },
         overrides: {
             MuiCssBaseline: {

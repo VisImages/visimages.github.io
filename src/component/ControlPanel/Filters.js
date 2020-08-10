@@ -14,23 +14,14 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const icon = <CheckBoxOutlineBlank fontSize="small" />;
-const checkedIcon = <CheckBox fontSize="small" />;
+const icon = <CheckBoxOutlineBlank fontSize="small"/>;
+const checkedIcon = <CheckBox fontSize="small"/>;
 
-function Filters({title, value, d, size='normal'}) {
+function Filters({title, value, d}) {
     const classes = useStyles();
     const [val, setVal] = useState('');
 
     const allFilters = d[`all${value}`];
-    const filteredFilters = [];
-    let moreCnt = 0;
-    for (const optionalValue of allFilters) {
-        if (optionalValue.includes(val)) {
-            filteredFilters.push(optionalValue);
-            moreCnt += 1;
-        }
-        if (moreCnt === 20) break;
-    }
 
 
     return <div className={classes.root}>
@@ -38,15 +29,20 @@ function Filters({title, value, d, size='normal'}) {
           className={classes.autocomplete}
           multiple
           size={'small'}
-          options={filteredFilters}
-          onChange={(e, newValue) => {d.updateFilter(value, newValue)}}
+          options={allFilters}
+          filterOptions={options => options
+            .filter(option => option.toLowerCase().includes(val.toLowerCase()))
+            .filter((_, i) => i < 20)}
+          onChange={(e, newValue) => {
+              d.updateFilter(value, newValue)
+          }}
           disableCloseOnSelect
-          renderOption={(option, { selected }) => (
+          renderOption={(option, {selected}) => (
             <React.Fragment>
                 <Checkbox
                   icon={icon}
                   checkedIcon={checkedIcon}
-                  style={{ marginRight: 8 }}
+                  style={{marginRight: 8}}
                   checked={selected}
                 />
                 {option}
