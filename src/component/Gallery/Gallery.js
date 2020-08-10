@@ -3,6 +3,7 @@ import {makeStyles, GridList, GridListTileBar, GridListTile, Typography} from "@
 import {inject, observer} from "mobx-react";
 import Pagination from "@material-ui/lab/Pagination";
 import VisCatFilters from "./VisCatFilters";
+import Image from "./Image";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -79,7 +80,7 @@ function Gallery({sys, d}) {
                                             cols={1} rows={1}
                                             style={{cursor: 'pointer'}}
                                             onClick={() => sys.showDetail(img.pid, img.iid, img.src)}>
-                      <img src={img.src} alt={img.src}/>
+                      <Image src={img.src}/>
                       <GridListTileBar
                         title={img.src}
                         titlePosition="top"
