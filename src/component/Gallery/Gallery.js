@@ -25,6 +25,8 @@ const useStyles = makeStyles(theme => ({
         transform: 'translateZ(0)',
     },
     titleBar: {
+        // background:'transparent',
+        // color:'transparent'
         background:
           'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
           'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
@@ -64,7 +66,7 @@ function Gallery({sys, d}) {
             <VisCatFilters/>
             <div className={classes.placeholder}/>
             <div className={classes.stat}>
-                <Typography>Find {d.showedImages.length} images.</Typography>
+                <Typography>{d.showedImages.length} images found.</Typography>
                 <Pagination
                   className={classes.pagination}
                   page={page}
@@ -76,18 +78,20 @@ function Gallery({sys, d}) {
             {
                 d.showedImages
                   .slice((page - 1) * cntPerPage, page * cntPerPage)
-                  .map(img => <GridListTile key={`${img.pid},${img.iid}`}
+                  .map(img => {
+                      const {title} = d.getPaperInfo(img.pid);
+                  return <GridListTile key={`${img.pid},${img.iid}`}
                                             cols={1} rows={1}
                                             style={{cursor: 'pointer'}}
                                             onClick={() => sys.showDetail(img.pid, img.iid, img.src)}>
                       <Image src={img.src}/>
                       <GridListTileBar
-                        title={img.src}
+                        title={title}
                         titlePosition="top"
                         actionPosition="left"
                         className={classes.titleBar}
                       />
-                  </GridListTile>)
+                  </GridListTile>})
             }
         </GridList>
     </div>

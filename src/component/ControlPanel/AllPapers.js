@@ -31,7 +31,7 @@ function AllPapers({d}) {
     const papers = d.filteredPapers;
 
     return <React.Fragment>
-        <Typography className={classes.cnt}>Find {papers.length} paper{papers.length !== 1 && 's'}.</Typography>
+        <Typography className={classes.cnt}>{papers.length} paper{papers.length !== 1 && 's'} found.</Typography>
         <div className={classes.list}>
             <VirtualList>
                 {papers.map(p => measure => <PaperItem paper={p} onLoad={measure}/>)}
