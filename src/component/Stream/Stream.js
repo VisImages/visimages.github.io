@@ -31,12 +31,6 @@ function Stream({d}) {
     const calCat = new Set();
     stream.forEach(d => calCat.add(d[2]));
 
-    console.log(stream.sort((a, b) => {
-        if (a[0] !== b[0]) return a[0] - b[0];
-        const ai = categories.indexOf(a[2]), bi = categories.indexOf(b[2]);
-        return ai - bi;
-    }), categories, [...calCat].sort((a, b) => allCategories.indexOf(a) - allCategories.indexOf(b)));
-
     const getOption = () => {
         return {
             animationDuration: 100,
