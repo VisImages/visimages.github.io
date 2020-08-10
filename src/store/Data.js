@@ -231,6 +231,11 @@ class Data {
             });
         });
 
+        for (let i = min; i <= max; i++)
+            for (const cat of [...categories])
+                if (!Object.keys(stream).includes(`${i},${cat}`))
+                    stream[`${i},${cat}`] = 0;
+
         return {
             min,
             max,
@@ -244,6 +249,7 @@ class Data {
     }
 
     @observable.shallow showedWords = [];
+
     @action updateWords() {
         const wordFrequencies = {};
         this.showedImages.forEach(img => {
