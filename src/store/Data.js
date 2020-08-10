@@ -23,6 +23,11 @@ class Data {
             if (cb instanceof Function) cb();
         });
     }
+    getPaperInfo = pid => {
+        for (const paper of this.papers)
+            if (paper.pid === pid) return paper;
+        return {};
+    }
 
     @computed get filteredPapers() {
         return this.papers.filter(p => {
