@@ -102,4 +102,7 @@ const TextTranslate = {
     'NoVis': 'no visualization'
 }
 
-export { ColorStyles, TextTranslate };
+const ReverseTextTranslate = {};
+Object.keys(TextTranslate).forEach(key => ReverseTextTranslate[TextTranslate[key]] = key);
+
+export { ColorStyles, TextTranslate, ReverseTextTranslate };

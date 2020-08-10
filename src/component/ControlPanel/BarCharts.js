@@ -39,6 +39,7 @@ function BarCharts({d}) {
                 data: ['papers', 'images'],
                 left: 10,
             },
+            color: ['#e94b4a', '#1f5886'],
             xAxis: [
                 {
                     type: 'category',

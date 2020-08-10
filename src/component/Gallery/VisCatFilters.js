@@ -3,9 +3,9 @@ import {
     makeStyles,
     Typography,
     Checkbox,
-    TextField
+    TextField, Chip
 } from "@material-ui/core";
-import {TextTranslate} from "../../store/Categories";
+import {TextTranslate, ReverseTextTranslate} from "../../store/Categories";
 import {inject, observer} from "mobx-react";
 import {Autocomplete} from "@material-ui/lab";
 
@@ -24,6 +24,9 @@ const useStyles = makeStyles(theme => ({
     autocomplete: {
         minWidth: '300px',
         maxWidth: '40vw',
+    },
+    chip: {
+        margin: theme.spacing(0.5),
     }
 }));
 
@@ -56,17 +59,19 @@ function VisCatFilters({d}) {
           multiple
           size={'small'}
           limitTags={3}
-          options={filteredFilters}
-          value={d.filterCategories}
-          onChange={(e, newValue) => {d.updateFilterCategories(newValue)}}
+          options={filteredFilters.map(t => TextTranslate[t])}
+          value={d.filterCategories.map(t => TextTranslate[t])}
+          onChange={(e, newValue) => {
+              d.updateFilterCategories(newValue.map(t => ReverseTextTranslate[t]))
+          }}
           disableCloseOnSelect
-          renderOption={(option, { selected }) => (
+          renderOption={(option, {selected}) => (
             <React.Fragment>
                 <Checkbox
-                  style={{ marginRight: 8 }}
+                  style={{marginRight: 8}}
                   checked={selected}
                 />
-                {TextTranslate[option]}
+                {option}
             </React.Fragment>
           )}
           renderInput={(params) => (
