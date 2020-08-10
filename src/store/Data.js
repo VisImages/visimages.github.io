@@ -81,10 +81,12 @@ class Data {
                 search: value.split(' '),
             }, res => {
                 this.updatePapers(res);
+                this.initImages();
                 this.extractFilters();
             })
         else {
             this[`filter${key}`] = value;
+            this.updateWords();
         }
     }
 
