@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const options = {
-    colors: ['#1f77b4'],
+    colors: ['#1f5886'],
     enableTooltip: true,
     deterministic: false,
     fontFamily: 'impact',
