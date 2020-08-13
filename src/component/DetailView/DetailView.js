@@ -49,6 +49,14 @@ const useStyles = makeStyles(theme => ({
         position: "absolute",
         opacity: "0.3",
     },
+    label: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        padding: theme.spacing(0.5),
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        color: '#ffffff'
+    },
     details: {
         padding: "10px",
         display: "flex",
@@ -117,8 +125,9 @@ function DetailView({d, sys}) {
                                         height: `${100 * (value.box[3] - value.box[1]) / state.dimensions.height}%`,
                                         backgroundColor: ColorStyles[value.visType],
                                         visibility: value.visibility,
-                                    }}
-                              />
+                                    }}>
+                                  <div className={classes.label}>{TextTranslate[value.visType]}</div>
+                              </div>
                           })}
                       </div>
                       <div className={classes.details} style={{height: state.imgHeight}}>

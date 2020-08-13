@@ -31,6 +31,7 @@ function Image({src}) {
               setState('loaded');
           })
           .catch(e => {
+              if (e.toString() === "AbortError: The user aborted a request.") return;
               setState('error');
           });
         return () => {

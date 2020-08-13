@@ -100,9 +100,10 @@ class Data {
         const papers = this.papers;
         const pids = papers.map(p => p.pid);
         this.root.apiV1.getImages(pids, res => {
-            this.images = res.map(img => ({captionStat: {}, ...img}));
+            this.images = res.map(img => ({captionStat: img.word_count === null ? {} : img.word_count, word_count: undefined, ...img}));
             this.updateImageCounts();
-            this.updateImageCaptionStat();
+            // this.updateImageCaptionStat();
+            this.updateWords();
         });
     }
     @action updateImageCounts = () => {
@@ -278,7 +279,6 @@ class Data {
         this.images.forEach(img => {
             img.captionStat = captionStat(img.caption);
         });
-        this.updateWords();
     }
 }
 
