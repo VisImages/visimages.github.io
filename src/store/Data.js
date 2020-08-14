@@ -114,6 +114,11 @@ class Data {
         })
         this.yearCount = JSON.parse(JSON.stringify(yearCount));
     };
+    getImageInfo = (pid, iid) => {
+        for (const image of this.images)
+            if (image.pid === pid && image.iid === iid) return image;
+        return {};
+    }
 
     @observable.shallow allCategories = [
         'line_chart',

@@ -10,60 +10,64 @@ import {
     ListItemIcon,
     ListItemText,
     Checkbox,
-    Button
+    Button, fade,
+    Collapse
 } from "@material-ui/core";
 import {ColorStyles, TextTranslate} from "../../store/Categories";
 import {inject, observer} from "mobx-react";
+import VisType from "./VisType";
 
 const useStyles = makeStyles(theme => ({
     root: {},
     titlebar: {
         display: "flex",
+        maxWidth: '50vw',
         justifyContent: 'space-between',
     },
     row: {
         position: "relative",
         display: "flex",
         flexDirection: "row",
-        // zIndex: 3,
-        alignItems: "flex-start",
+        justifyContent: 'center',
+        alignItems: "center",
         width: "50vw",
-        height: "50vh",
     },
     imgView: {
-        display: "block",
         position: "relative",
-        width: "60%",
-        height: "fit-content",
+        flex: 1,
+        margin: theme.spacing(2, 0),
     },
     img: {
-        // display: "flex",
         position: "relative",
-        width: "100%",
-        // maxWidth: "80%",
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
     },
-    title: {
-        margin: theme.spacing(1, 0, 1),
+    recs: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        overflow: 'hidden',
     },
     rec: {
         position: "absolute",
-        opacity: "0.3",
     },
     label: {
         position: 'absolute',
         top: 0,
         right: 0,
         padding: theme.spacing(0.5),
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: 'rgba(0, 0, 0, 0.3)',
         color: '#ffffff'
     },
     details: {
-        padding: "10px",
-        display: "flex",
-        flexDirection: "column",
         position: "relative",
-        width: "40%",
+        width: "15vw",
         overflow: "scroll"
+    },
+    caption: {
+        maxWidth: '50vw',
     }
 }));
 
@@ -71,29 +75,42 @@ function DetailView({d, sys}) {
     const classes = useStyles();
     const boxes = d.boxes;
     const {title, url} = d.getPaperInfo(sys.detailedImg[0]);
+    const {caption} = d.getImageInfo(sys.detailedImg[0], sys.detailedImg[1]);
 
     const [state, setState] = useState({
         dimensions: {
             height: 1,
             width: 1,
         },
-        imgHeight: 0,
+        imgSize: [0, 0],
     })
 
     const onImgLoad = ({target: img}) => {
+        const maxWidth = window.innerWidth * 0.35,
+          maxHeight = window.innerHeight * 0.5;
+        const scale = Math.min(maxHeight / img.naturalHeight, maxWidth / img.naturalWidth);
         setState({
             dimensions: {
                 height: img.naturalHeight,
                 width: img.naturalWidth,
             },
-            imgHeight: img.clientHeight
+            imgSize: [scale * img.naturalWidth, scale * img.naturalHeight],
         });
     }
 
-    const handleChange = index => {
-        const {visibility} = boxes[index];
-        boxes[index].visibility = visibility === "visible" ? "hidden" : "visible";
+    const handleChange = indexes => {
+        indexes.forEach(index => {
+            const {visibility} = boxes[index];
+            boxes[index].visibility = visibility === "visible" ? "hidden" : "visible";
+        });
     };
+
+    const categories = {};
+    if (boxes !== null)
+        boxes.forEach((box, index) => {
+            if (!categories.hasOwnProperty(box.visType)) categories[box.visType] = [];
+            categories[box.visType].push({index, ...box});
+        });
 
     return <Dialog open={sys.detailView} onClose={sys.closeDetail} maxWidth={false}>
         <DialogContent>
@@ -106,61 +123,46 @@ function DetailView({d, sys}) {
                       </Typography>
                       <Button href={url} variant={"contained"}>Paper</Button>
                   </div>
-
                   <div className={classes.row}>
-                      <div className={classes.imgView}>
-                          <img
-                            className={classes.img}
-                            src={sys.detailedImg[2]} alt={sys.detailedImg[2]}
-                            onLoad={onImgLoad}/>
-                          {boxes.map((value, index) => {
-                              return <div
-                                key={index}
-                                className={classes.rec}
-                                style={
-                                    {
-                                        left: `${100 * value.box[0] / state.dimensions.width}%`,
-                                        top: `${100 * value.box[1] / state.dimensions.height}%`,
-                                        width: `${100 * (value.box[2] - value.box[0]) / state.dimensions.width}%`,
-                                        height: `${100 * (value.box[3] - value.box[1]) / state.dimensions.height}%`,
-                                        backgroundColor: ColorStyles[value.visType],
-                                        visibility: value.visibility,
-                                    }}>
-                                  <div className={classes.label}>{TextTranslate[value.visType]}</div>
-                              </div>
-                          })}
+                      <div className={classes.imgView}
+                           style={{width: state.imgSize[0], height: state.imgSize[1]}}>
+                          <img className={classes.img}
+                               src={sys.detailedImg[2]} alt={sys.detailedImg[2]}
+                               onLoad={onImgLoad}
+                               style={{width: state.imgSize[0], height: state.imgSize[1]}}/>
+                          <div className={classes.recs}
+                               style={{width: state.imgSize[0], height: state.imgSize[1]}}>
+                              {boxes.map((value, index) => {
+                                  return <div key={index}
+                                              className={classes.rec}
+                                              style={
+                                                  {
+                                                      left: `${100 * value.box[0] / state.dimensions.width}%`,
+                                                      top: `${100 * value.box[1] / state.dimensions.height}%`,
+                                                      width: `${100 * (value.box[2] - value.box[0]) / state.dimensions.width}%`,
+                                                      height: `${100 * (value.box[3] - value.box[1]) / state.dimensions.height}%`,
+                                                      backgroundColor: fade(ColorStyles[value.visType], 0.3),
+                                                      visibility: value.visibility,
+                                                  }}>
+                                      <div className={classes.label}>{TextTranslate[value.visType]}</div>
+                                  </div>
+                              })}
+                          </div>
                       </div>
-                      <div className={classes.details} style={{height: state.imgHeight}}>
-                          <Typography variant="h6" className={classes.title}>
-                              Visualizations:
-                          </Typography>
-                          <List>
-                              {
-                                  boxes.map((value, index) => {
-                                      const labelId = `checkbox-list-label-${index}`;
-                                      return (<ListItem key={index} role={undefined} dense button
-                                                        onClick={() => handleChange(index)}>
-                                          <ListItemIcon>
-                                              <Checkbox
-                                                edge="start"
-                                                checked={value.visibility === "visible"}
-                                                tabIndex={-1}
-                                                style={
-                                                    {
-                                                        color: ColorStyles[value.visType],
-                                                    }}
-                                                disableRipple
-                                                index={index}
-                                                label={TextTranslate[value.visType]}
-                                              />
-                                          </ListItemIcon>
-                                          <ListItemText id={labelId} primary={TextTranslate[value.visType]}/>
-                                      </ListItem>)
-
-                                  })}
+                      <div className={classes.details} style={{height: state.imgSize[1]}}>
+                          <List disablePadding>
+                              {Object.keys(categories)
+                                .sort((a, b) => categories[b].length - categories[a].length)
+                                .map(visType => {
+                                    return <VisType key={visType}
+                                                    visType={visType} boxes={categories[visType]}
+                                                    setVisible={handleChange}/>
+                                })}
                           </List>
                       </div>
                   </div>
+
+                  <Typography className={classes.caption}>{caption}</Typography>
               </div>}
         </DialogContent>
     </Dialog>
