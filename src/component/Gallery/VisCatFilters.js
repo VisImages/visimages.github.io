@@ -3,7 +3,7 @@ import {
     makeStyles,
     Typography,
     Checkbox,
-    TextField, Chip
+    TextField
 } from "@material-ui/core";
 import {TextTranslate, ReverseTextTranslate} from "../../store/Categories";
 import {inject, observer} from "mobx-react";

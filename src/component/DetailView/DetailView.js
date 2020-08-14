@@ -6,12 +6,7 @@ import {
     Typography,
     List,
     CircularProgress,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Checkbox,
-    Button, fade,
-    Collapse
+    Button, fade
 } from "@material-ui/core";
 import {ColorStyles, TextTranslate} from "../../store/Categories";
 import {inject, observer} from "mobx-react";

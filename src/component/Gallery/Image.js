@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {makeStyles, CircularProgress, Typography} from "@material-ui/core";
-import {inject, observer} from "mobx-react";
+import {observer} from "mobx-react";
 
 const useStyles = makeStyles(theme => ({
     root: {
