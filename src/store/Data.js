@@ -1,5 +1,4 @@
 import {action, computed, observable} from "mobx";
-import captionStat from "./captionHandler";
 
 class Data {
     constructor(root) {
@@ -279,12 +278,6 @@ class Data {
 
     @observable boxes = null;
     @action updateBBoxes = boxes => this.boxes = boxes;
-
-    updateImageCaptionStat = () => {
-        this.images.forEach(img => {
-            img.captionStat = captionStat(img.caption);
-        });
-    }
 }
 
 export default Data;
