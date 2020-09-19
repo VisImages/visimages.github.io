@@ -1,4 +1,4 @@
-const url = uri => `http://127.0.0.1:5000/v1${uri}`;
+const url = uri => `http://3.16.54.204:4000/v1${uri}`;
 
 class APIv1 {
     getPapers = (params = {}, cb = null) => {

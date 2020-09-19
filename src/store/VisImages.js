@@ -1,5 +1,7 @@
 import { observable, action} from "mobx";
 
+const source_url = 'http://3.16.54.204:4000/'
+
 class VisImages {
     @observable filterConditions = {
         year: [],
@@ -36,7 +38,7 @@ class VisImages {
     }
 
     getBoundingBoxes(pid, iid) {
-        fetch(`http://127.0.0.1:5000/bbox/${pid}/${iid}`)
+        fetch(source_url+`bbox/${pid}/${iid}`)
           .then(response => response.json())
           .then(data => {
               console.log(data);
@@ -51,7 +53,7 @@ class VisImages {
         let urls = [];
         const showList = this.showList;
         for (let i = 0; i < showList.length; i++) {
-            fetch(`http://127.0.0.1:5000/img_src/${showList[i].pid}/${showList[i].iid}`)
+            fetch(source_url+`img_src/${showList[i].pid}/${showList[i].iid}`)
               .then(response => response.json())
               .then(data => {
                   // console.log(data);
@@ -67,7 +69,7 @@ class VisImages {
 
     @action
     fetchFilteredData(yearControl = false) {
-        fetch('http://127.0.0.1:5000/filtering', {
+        fetch(source_url+'filtering', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(this.filterConditions),
