@@ -1,5 +1,5 @@
 // const url = uri => `http://3.16.54.204:4000/v1${uri}`;//remote version
-const url = uri => `http://localhost:5000/v1${uri}`;  //local version
+const url = uri => `https://visimages-explorer-backend.projects.zjvis.org/v1${uri}`;  //local version
 
 class APIv1 {
     getPapers = (params = {}, cb = null) => {
