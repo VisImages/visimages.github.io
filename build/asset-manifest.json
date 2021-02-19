@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/explorer/static/css/main.9daa7be1.chunk.css",
-    "main.js": "/explorer/static/js/main.bd4dd751.chunk.js",
-    "main.js.map": "/explorer/static/js/main.bd4dd751.chunk.js.map",
-    "runtime-main.js": "/explorer/static/js/runtime-main.c0e13fce.js",
-    "runtime-main.js.map": "/explorer/static/js/runtime-main.c0e13fce.js.map",
-    "static/js/2.32f39637.chunk.js": "/explorer/static/js/2.32f39637.chunk.js",
-    "static/js/2.32f39637.chunk.js.map": "/explorer/static/js/2.32f39637.chunk.js.map",
-    "index.html": "/explorer/index.html",
-    "precache-manifest.48ebf33d27794883951aaec68e98ae46.js": "/explorer/precache-manifest.48ebf33d27794883951aaec68e98ae46.js",
-    "service-worker.js": "/explorer/service-worker.js",
-    "static/css/main.9daa7be1.chunk.css.map": "/explorer/static/css/main.9daa7be1.chunk.css.map",
-    "static/js/2.32f39637.chunk.js.LICENSE.txt": "/explorer/static/js/2.32f39637.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "/explorer/static/media/logo.62a8d7ca.svg"
+    "main.css": "/visimages-explorer/static/css/main.9daa7be1.chunk.css",
+    "main.js": "/visimages-explorer/static/js/main.bd4dd751.chunk.js",
+    "main.js.map": "/visimages-explorer/static/js/main.bd4dd751.chunk.js.map",
+    "runtime-main.js": "/visimages-explorer/static/js/runtime-main.3373f217.js",
+    "runtime-main.js.map": "/visimages-explorer/static/js/runtime-main.3373f217.js.map",
+    "static/js/2.9c5effd3.chunk.js": "/visimages-explorer/static/js/2.9c5effd3.chunk.js",
+    "static/js/2.9c5effd3.chunk.js.map": "/visimages-explorer/static/js/2.9c5effd3.chunk.js.map",
+    "index.html": "/visimages-explorer/index.html",
+    "precache-manifest.206ae14bbfeea7831c469a8bb03ac1a5.js": "/visimages-explorer/precache-manifest.206ae14bbfeea7831c469a8bb03ac1a5.js",
+    "service-worker.js": "/visimages-explorer/service-worker.js",
+    "static/css/main.9daa7be1.chunk.css.map": "/visimages-explorer/static/css/main.9daa7be1.chunk.css.map",
+    "static/js/2.9c5effd3.chunk.js.LICENSE.txt": "/visimages-explorer/static/js/2.9c5effd3.chunk.js.LICENSE.txt",
+    "static/media/logo.svg": "/visimages-explorer/static/media/logo.62a8d7ca.svg"
   },
   "entrypoints": [
-    "static/js/runtime-main.c0e13fce.js",
-    "static/js/2.32f39637.chunk.js",
+    "static/js/runtime-main.3373f217.js",
+    "static/js/2.9c5effd3.chunk.js",
     "static/css/main.9daa7be1.chunk.css",
     "static/js/main.bd4dd751.chunk.js"
   ]
