@@ -18,31 +18,32 @@ const useStyles = makeStyles(theme => ({
 function Image({src}) {
     const classes = useStyles();
 
-    const [state, setState] = useState('loading');
+    // const [state, setState] = useState('loading');
 
-    const [imgSrc, setSrc] = useState(null);
-    useEffect(() => {
-        const controller = new AbortController();
-        const {signal} = controller;
-        fetch(src, {signal})
-          .then(res => res.blob())
-          .then(img => {
-              setSrc(URL.createObjectURL(img));
-              setState('loaded');
-          })
-          .catch(e => {
-              if (e.toString() === "AbortError: The user aborted a request.") return;
-              setState('error');
-          });
-        return () => {
-            controller.abort();
-        }
-    }, [src]);
+    // const [imgSrc, setSrc] = useState(null);
+    // useEffect(() => {
+    //     const controller = new AbortController();
+    //     const {signal} = controller;
+    //     fetch(src, {signal})
+    //       .then(res => res.blob())
+    //       .then(img => {
+    //           setSrc(URL.createObjectURL(img));
+    //           setState('loaded');
+    //       })
+    //       .catch(e => {
+    //           if (e.toString() === "AbortError: The user aborted a request.") return;
+    //           setState('error');
+    //       });
+    //     return () => {
+    //         controller.abort();
+    //     }
+    // }, [src]);
 
     return <div className={classes.root}>
-        {state === 'loading' && <CircularProgress/>}
-        {state === 'loaded' && <img className={classes.img} src={imgSrc} alt={src}/>}
-        {state === 'error' && <Typography className={classes.img}>Fail to load.</Typography>}
+        <img className={classes.img} src={src} alt={src}/>
+        {/* {state === 'loading' && <CircularProgress/>}
+        {state === 'loaded' && }
+        {state === 'error' && <Typography className={classes.img}>Fail to load.</Typography>} */}
     </div>
 }
 

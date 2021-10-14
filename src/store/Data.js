@@ -6,9 +6,8 @@ class Data {
     }
 
     init() {
-        this.initPapers(() => {
-            this.initImages();
-        });
+        this.initPapers();
+        this.initImages();
     }
 
     @observable.shallow papers = [];
@@ -16,11 +15,8 @@ class Data {
         this.papers = papers;
     }
     initPapers = (cb = null) => {
-        this.root.apiV1.getPapers({}, res => {
-            this.updatePapers(res);
-            this.extractFilters();
-            if (cb instanceof Function) cb();
-        });
+        this.updatePapers(this.root.apiV1.filterPapersByCondition({}));
+        this.extractFilters();
     }
     getPaperInfo = pid => {
         for (const paper of this.papers)
@@ -80,6 +76,7 @@ class Data {
     @observable.shallow filterAuthors = [];
     @observable.shallow filterYears = [];
     @action updateFilter = (key, value) => {
+        // console.log(key, value, this.filterAuthors, this.filterConferences, this.filteredPapers);
         if (key === 'search')
             this.root.apiV1.getPapers({
                 search: value.split(' '),
@@ -98,12 +95,16 @@ class Data {
     initImages = () => {
         const papers = this.papers;
         const pids = papers.map(p => p.pid);
-        this.root.apiV1.getImages(pids, res => {
-            this.images = res.map(img => ({captionStat: img.word_count === null ? {} : img.word_count, word_count: undefined, ...img}));
-            this.updateImageCounts();
-            // this.updateImageCaptionStat();
-            this.updateWords();
-        });
+        console.log(pids);
+        // this.root.apiV1.getImages(pids, res => {
+        //     this.images = res.map(img => ({captionStat: img.word_count === null ? {} : img.word_count, word_count: undefined, ...img}));
+        //     this.updateImageCounts();
+        //     // this.updateImageCaptionStat();
+        //     this.updateWords();
+        // });
+        this.images = this.root.apiV1.getImages(pids);
+        this.updateImageCounts();
+        this.updateWords();
     }
     @action updateImageCounts = () => {
         const yearCount = this.yearCount;

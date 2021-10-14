@@ -83,8 +83,8 @@ function Gallery({sys, d}) {
                   return <GridListTile key={`${img.pid},${img.iid}`}
                                             cols={1} rows={1}
                                             style={{cursor: 'pointer'}}
-                                            onClick={() => sys.showDetail(img.pid, img.iid, img.src)}>
-                      <Image src={img.src}/>
+                                            onClick={() => sys.showDetail(img.pid, img.iid, img.url)}>
+                      <Image src={img.url}/>
                       <GridListTileBar
                         title={title}
                         titlePosition="top"

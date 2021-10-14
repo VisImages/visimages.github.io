@@ -57,9 +57,10 @@ class SystemStatus {
         if (this.detailedImg[0] !== pid || this.detailedImg[1] !== iid) {
             this.detailedImg = [pid, iid, url];
             this.root.d.updateBBoxes(null);
-            this.root.apiV1.getBBox(pid, iid, res => {
-                this.root.d.updateBBoxes(res.bboxes);
-            })
+            this.root.d.updateBBoxes(this.root.apiV1.getBBox(pid, iid))
+            // this.root.apiV1.getBBox(pid, iid, res => {
+            //     this.root.d.updateBBoxes(res.bboxes);
+            // })
         }
     }
     @action closeDetail = () => {
