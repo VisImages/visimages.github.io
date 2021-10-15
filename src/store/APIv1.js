@@ -1,18 +1,15 @@
 import paperInfo from "../metadata/visimage_paper_info.json"
 import imageInfo from "../metadata/visimages_data_with_word_count.json"
 
-const url = uri => process.env.PUBLIC_URL+`${uri}`; 
+
+var natural = require('natural');
+var tokenizer = new natural.WordTokenizer();
+
+// const url = uri => "https://github.com/VisImages/visimages-image-data/blob/main"+`${uri}?raw=true`;  //remote version
+
+const url = uri => process.env.PUBLIC_URL+"/image-data"+`${uri}`;  //local version in which the images are stored in the public folder
 
 class APIv1 {
-    getPapers = (params = {}, cb = null) => {
-        console.log(params)
-        const args = [];
-        ['search', 'conference', 'authors', 'year'].forEach(key => {
-            if (!!params[key]) args.push(`s=${params[key].join(',')}`);
-        })
-        const req = new Request(url(`/papers${args.length > 0 ? `?${args.join('&')}` : ''}`));
-        this.fetch(req, cb);
-    }
 
     getImages = (pids = []) => {
         const images = [];
@@ -23,7 +20,7 @@ class APIv1 {
                     // console.log(img);
                     images.push({
                         pid: pid,
-                        url: url(`/image-data/${pid}/${img.iid}.png`),
+                        url: url(`/${pid}/${img.iid}.png`),
                         ...img
                     })
                 })
@@ -65,7 +62,7 @@ class APIv1 {
 
     filterPapersByCondition = (params) => {
         console.log(params)
-        if (Object.keys(params).length === 0){
+        if (Object.keys(params).length === 0 || tokenizer.tokenize(params.search).length == 0){
             const pids = [];
             paperInfo.forEach(paperObj => {
                 pids.push(paperObj)
@@ -73,17 +70,39 @@ class APIv1 {
             return pids
         }
 
-        ['search', 'conference', 'authors', 'year'].forEach(key => {
-            if (!!params[key]){
-                const pids = [];
-                if (key == 'search'){
-                    if (params[key] == "")
-                    paperInfo.forEach(paperObj => {
-                        pids.push(paperObj) 
-                    })
-                }
+        const pids = [];
+        ["search", "conference", "year", "authors"].forEach(key => {
+            if (params[key] != undefined && key === "search"){
+                const keywords = [];
+                tokenizer.tokenize(params.search).forEach(word => {
+                    keywords.push(natural.PorterStemmer.stem(word))
+                })
+                paperInfo.forEach(paperObj => {
+                    const wordsStemmed = this.tokenizeAndStem(paperObj.title)
+
+                    let allIncluded = true;
+                    for (let i = 0; i < keywords.length; i++){
+                        if (wordsStemmed.indexOf(keywords[i]) == -1){
+                            allIncluded = false;
+                            break
+                        }
+                    }
+                    if (allIncluded){
+                        pids.push(paperObj);
+                    }
+                })
             }
         })
+        return pids;
+    }
+
+    tokenizeAndStem = (text) => {
+        const wordsStemmed = []
+        let textProcessed = text.toLowerCase().split(" ");
+        textProcessed.forEach(word => {
+            wordsStemmed.push(natural.PorterStemmer.stem(word))
+        })
+        return wordsStemmed;
     }
 
 }

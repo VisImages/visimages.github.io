@@ -33,7 +33,7 @@ function AppBar() {
     return <div className={classes.root}>
         <img className={classes.logo}
              alt={'logo'} src={logo}/>
-        <Typography className={classes.title}>VisImages</Typography>
+        <Typography className={classes.title}>VisImages Explorer</Typography>
     </div>
 }
 

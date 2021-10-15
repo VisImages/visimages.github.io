@@ -52,41 +52,38 @@ class Data {
         const allConferences = new Set();
         const allAuthors = new Set();
         const allYears = new Set();
-        const yearCount = {};
         papers.forEach(p => {
             allConferences.add(p.conference);
             for (const aut of p.authors) allAuthors.add(aut);
             allYears.add(p.year);
-            if (!yearCount[p.year])
-                yearCount[p.year] = {
-                    papers: 0,
-                    images: 0,
-                }
-            yearCount[p.year].papers += 1;
             this.paperYear[p.pid] = p.year;
         });
         this.allConferences = [...allConferences];
         this.allAuthors = [...allAuthors].sort();
         this.allYears = [...allYears].sort();
-        this.yearCount = yearCount;
     }
 
-    search = [];
+    search = "";
     @observable.shallow filterConferences = [];
     @observable.shallow filterAuthors = [];
     @observable.shallow filterYears = [];
     @action updateFilter = (key, value) => {
         // console.log(key, value, this.filterAuthors, this.filterConferences, this.filteredPapers);
-        if (key === 'search')
-            this.root.apiV1.getPapers({
-                search: value.split(' '),
-            }, res => {
-                this.updatePapers(res);
-                this.initImages();
-                this.extractFilters();
+        if (key === 'search'){
+            const res = this.root.apiV1.filterPapersByCondition({
+                search: value,
             })
+            this.updatePapers(res);
+            this.initImages();
+            this.extractFilters();}
+
+            // this.root.apiV1.getPapers({
+            //     search: value.split(' '),
+            // }, res => {
+            // })
         else {
             this[`filter${key}`] = value;
+            this.updateImageCounts();
             this.updateWords();
         }
     }
@@ -95,20 +92,23 @@ class Data {
     initImages = () => {
         const papers = this.papers;
         const pids = papers.map(p => p.pid);
-        console.log(pids);
-        // this.root.apiV1.getImages(pids, res => {
-        //     this.images = res.map(img => ({captionStat: img.word_count === null ? {} : img.word_count, word_count: undefined, ...img}));
-        //     this.updateImageCounts();
-        //     // this.updateImageCaptionStat();
-        //     this.updateWords();
-        // });
         this.images = this.root.apiV1.getImages(pids);
         this.updateImageCounts();
         this.updateWords();
     }
+
     @action updateImageCounts = () => {
-        const yearCount = this.yearCount;
-        this.images.forEach(img => {
+        const yearCount = {};
+        this.filteredPapers.forEach(p => {
+            if (!yearCount[p.year])
+                yearCount[p.year] = {
+                    papers: 0,
+                    images: 0,
+                }
+            yearCount[p.year].papers += 1;
+        });
+
+        this.showedImages.forEach(img => {
             const year = this.paperYear[img.pid];
             yearCount[year].images += 1;
         })
