@@ -91,11 +91,13 @@ function BarCharts({d}) {
                               const brushRange = areas[0].coordRange;
                               const yearRange = brushRange.map(val => val + bars[0].year);
                               d.updateFilter('Years', yearRange);
+                              d.barSelected = true;
                           },
                           brushselected: ({batch}) => {
                               const {areas} = batch[0];
                               if (areas.length !== 0) return;
                               d.updateFilter('Years', []);
+                              d.barSelected = false;
                           }
                       }}/>
     </div>

@@ -75,12 +75,17 @@ class Data {
             })
             this.updatePapers(res);
             this.initImages();
-            this.extractFilters();}
+            // this.extractFilters();
+        }
 
             // this.root.apiV1.getPapers({
             //     search: value.split(' '),
             // }, res => {
             // })
+        else if (key == 'Years'){
+            this[`filter${key}`] = value;
+            this.updateWords();
+        }
         else {
             this[`filter${key}`] = value;
             this.updateImageCounts();
@@ -191,6 +196,8 @@ class Data {
         this.updateWords();
     }
 
+    
+    @observable barSelected = false;
     @computed get bars() {
         if (this.allYears.length === 0) return [];
         const minYear = this.allYears[0];
@@ -209,6 +216,25 @@ class Data {
             }
         })
     }
+
+    // updateBars = () => {
+    //     if (this.allYears.length === 0) return [];
+    //     const minYear = this.allYears[0];
+    //     const maxYear = this.allYears[this.allYears.length - 1];
+    //     return [...new Array(maxYear - minYear + 1)].map((_, i) => {
+    //         const year = minYear + i;
+    //         if (!this.yearCount[year]) return {
+    //             year,
+    //             papers: 0,
+    //             images: 0,
+    //         }
+    //         return {
+    //             year,
+    //             papers: this.yearCount[year].papers,
+    //             images: this.yearCount[year].images,
+    //         }
+    //     })
+    // }
 
     @computed get showedImages() {
         const pids = this.filteredPapers.map(p => p.pid);

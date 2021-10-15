@@ -44,6 +44,7 @@ function Search({d}) {
         </div>
         <InputBase
           placeholder="Search…"
+          disabled={d.barSelected} 
           classes={{
               root: classes.inputRoot,
               input: classes.inputInput,

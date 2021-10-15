@@ -26,6 +26,7 @@ function Filters({title, value, d}) {
 
     return <div className={classes.root}>
         <Autocomplete
+          disabled={d.barSelected} 
           className={classes.autocomplete}
           multiple
           size={'small'}
