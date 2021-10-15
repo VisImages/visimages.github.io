@@ -1,4 +1,4 @@
-import {action, computed, observable} from "mobx";
+import { action, computed, observable } from "mobx";
 
 class Data {
     constructor(root) {
@@ -63,13 +63,13 @@ class Data {
         this.allYears = [...allYears].sort();
     }
 
-    search = "";
     @observable.shallow filterConferences = [];
     @observable.shallow filterAuthors = [];
     @observable.shallow filterYears = [];
+    @observable.shallow filterCaption = [];
     @action updateFilter = (key, value) => {
         // console.log(key, value, this.filterAuthors, this.filterConferences, this.filteredPapers);
-        if (key === 'search'){
+        if (key === 'search') {
             const res = this.root.apiV1.filterPapersByCondition({
                 search: value,
             })
@@ -78,16 +78,19 @@ class Data {
             // this.extractFilters();
         }
 
-            // this.root.apiV1.getPapers({
-            //     search: value.split(' '),
-            // }, res => {
-            // })
-        else if (key == 'Years'){
+        // this.root.apiV1.getPapers({
+        //     search: value.split(' '),
+        // }, res => {
+        // })
+        else if (key == 'Years') {
             this[`filter${key}`] = value;
             this.updateWords();
         }
         else {
-            this[`filter${key}`] = value;
+            if (key == "Caption")
+                this[`filter${key}`] = this.root.apiV1.tokenizeAndStem(value);
+            else
+                this[`filter${key}`] = value;
             this.updateImageCounts();
             this.updateWords();
         }
@@ -196,7 +199,7 @@ class Data {
         this.updateWords();
     }
 
-    
+
     @observable barSelected = false;
     @computed get bars() {
         if (this.allYears.length === 0) return [];
@@ -238,18 +241,29 @@ class Data {
 
     @computed get showedImages() {
         const pids = this.filteredPapers.map(p => p.pid);
+        console.log(this.filterCaption, this.filterCaption.length);
         return this.images
-          .filter(img => {
-              if (!pids.includes(img.pid)) return false;
-              let isFiltered = false;
-              for (const cat of img.categories)
-                  if (this.filterCategories.includes(cat)) {
-                      isFiltered = true;
-                      break;
-                  }
-              if (!isFiltered) return false;
-              return true;
-          });
+            .filter(img => {
+                if (!pids.includes(img.pid)) return false;
+                if (this.filterCaption.length > 0){
+                    let isFiltered = false;
+                    for (const keyword of this.filterCaption) {
+                        console.log(keyword, img.captionStat[keyword])
+                        if (img.captionStat[keyword] != undefined) {
+                            isFiltered = true;
+                            break;
+                        }
+                    }
+                    if (!isFiltered) return false
+                }
+                let isFiltered = false;
+                for (const cat of img.categories)
+                    if (this.filterCategories.includes(cat)) {
+                        isFiltered = true;
+                        break;
+                    }
+                return isFiltered
+            });
     }
 
     @computed get stream() {

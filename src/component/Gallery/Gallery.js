@@ -4,6 +4,7 @@ import {inject, observer} from "mobx-react";
 import Pagination from "@material-ui/lab/Pagination";
 import VisCatFilters from "./VisCatFilters";
 import Image from "./Image";
+import Search from "./Search"
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -18,9 +19,9 @@ const useStyles = makeStyles(theme => ({
     },
     gridList: {
         position: 'absolute',
-        top: 50,
+        top: 60,
         width: `calc(100% - ${theme.spacing(1)}px)`,
-        height: 'calc(100% - 50px)',
+        height: 'calc(100% - 60px)',
         // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
         transform: 'translateZ(0)',
     },
@@ -33,8 +34,10 @@ const useStyles = makeStyles(theme => ({
     },
     actions: {
         position: 'relative',
-        zIndex: 100,
+        // zIndex: 100,
+        height: '60px',
         display: 'flex',
+        justifyContent: 'space-between',
         width: '100%',
         marginBottom: theme.spacing(1),
         backgroundColor: theme.palette.background.paper,
@@ -64,7 +67,8 @@ function Gallery({sys, d}) {
     return <div className={classes.root}>
         <div className={classes.actions}>
             <VisCatFilters/>
-            <div className={classes.placeholder}/>
+            {/* <div className={classes.placeholder}/> */}
+            <Search/>
             <div className={classes.stat}>
                 <Typography>{d.showedImages.length} images found.</Typography>
                 <Pagination

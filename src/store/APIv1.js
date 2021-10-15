@@ -26,7 +26,11 @@ class APIv1 {
                 })
             }
         })
-        return images
+        let shuffled = images
+        .map((value) => ({ value, sort: Math.random() }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(({ value }) => value)
+        return shuffled
     }
 
     getBBox = (pid, iid) => {
@@ -80,15 +84,11 @@ class APIv1 {
                 paperInfo.forEach(paperObj => {
                     const wordsStemmed = this.tokenizeAndStem(paperObj.title)
 
-                    let allIncluded = true;
                     for (let i = 0; i < keywords.length; i++){
-                        if (wordsStemmed.indexOf(keywords[i]) == -1){
-                            allIncluded = false;
+                        if (wordsStemmed.indexOf(keywords[i]) != -1){
+                            pids.push(paperObj);
                             break
                         }
-                    }
-                    if (allIncluded){
-                        pids.push(paperObj);
                     }
                 })
             }
@@ -100,11 +100,11 @@ class APIv1 {
         const wordsStemmed = []
         let textProcessed = text.toLowerCase().split(" ");
         textProcessed.forEach(word => {
-            wordsStemmed.push(natural.PorterStemmer.stem(word))
+            if (word != "")
+                wordsStemmed.push(natural.PorterStemmer.stem(word))
         })
         return wordsStemmed;
     }
-
 }
 
 export default APIv1;
