@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function Search({d}) {
+function Search({d, keyword = 'title'}) {
     const classes = useStyles();
 
     return <div className={classes.search}>
@@ -43,14 +43,16 @@ function Search({d}) {
             <SearchIcon/>
         </div>
         <InputBase
-          placeholder="Search…"
-          disabled={d.barSelected} 
+          placeholder= {`Search ${keyword}...`}
+          disabled={d.barSelected||keyword!='title'} 
           classes={{
               root: classes.inputRoot,
               input: classes.inputInput,
           }}
           onKeyPress={e => {
-              if (e.key === 'Enter') d.updateFilter('search', e.target.value);
+              if (e.key === 'Enter') {
+                d.updateFilter('search', e.target.value);
+            }
           }}
         />
     </div>
