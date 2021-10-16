@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
     },
     actions: {
         position: 'relative',
-        // zIndex: 100,
+        zIndex: 100,
         height: '60px',
         display: 'flex',
         justifyContent: 'space-between',

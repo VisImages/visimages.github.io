@@ -20,64 +20,60 @@ const useStyles = makeStyles(theme => ({
 function Stream({d}) {
     const classes = useStyles();
     const allCategories = Object.keys(ColorStyles);
-    let {min, max, categories, stream} = d.stream;
+    let {min, max, categories, bars} = d.barSeries;
     categories = categories.sort((a, b) => allCategories.indexOf(a) - allCategories.indexOf(b));
-    stream = stream.sort((a, b) => {
-        const ai = categories.indexOf(a[2]), bi = categories.indexOf(b[2]);
+    bars = bars.sort((a, b) => {
+        const ai = categories.indexOf(a.name), bi = categories.indexOf(b.name);
         if (ai !== bi) return ai - bi;
-        return a[0] - b[0];
+        return 0;
     })
+    // stream = stream.sort((a, b) => {
+    //     const ai = categories.indexOf(a[2]), bi = categories.indexOf(b[2]);
+    //     if (ai !== bi) return ai - bi;
+    //     return a[0] - b[0];
+    // })
 
-    const calCat = new Set();
-    stream.forEach(d => calCat.add(d[2]));
+    // const calCat = new Set();
+    // stream.forEach(d => calCat.add(d[2]));
+    // console.log(stream);
+    console.log(bars);
+    let years = Array.from({length: max-min+1}, (_, i) => i + min);
 
     const getOption = () => {
         return {
-            animationDuration: 100,
             tooltip: {
-                trigger: 'axis',
-                axisPointer: {
-                    type: 'line',
-                    lineStyle: {
-                        color: 'rgba(0,0,0,0.2)',
-                        width: 1,
-                        type: 'solid'
-                    }
-                }
+              trigger: 'axis',
+              axisPointer: {
+                type: 'shadow'
+              }
             },
             legend: {
                 formatter: name => TextTranslate[name],
                 data: categories,
+                x: 'center',
+                y: 'bottom'
             },
             color: categories.map(cat => ColorStyles[cat]),
-            singleAxis: {
-                top: 50,
-                bottom: 50,
-                type: 'value',
-                min,
-                max,
-                axisPointer: {
-                    label: {
-                        show: true
-                    }
-                },
+            grid: {
+              top: '3%',
+              left: '3%',
+              right: '4%',
+              bottom: '25%',
+              containLabel: true
             },
-            series: [
-                {
-                    type: 'themeRiver',
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 20,
-                            shadowColor: 'rgba(0, 0, 0, 0.2)'
-                        }
-                    },
-                    data: stream,
-                    label: {
-                        show: false,
-                    }
-                }
-            ]
-        }
+            xAxis: [
+              {
+                type: 'category',
+                data: years,
+              }
+            ],
+            yAxis: [
+              {
+                type: 'value'
+              }
+            ],
+            series: bars
+          };
     }
 
     return <div className={classes.root}>

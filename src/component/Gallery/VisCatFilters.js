@@ -74,9 +74,18 @@ function VisCatFilters({d}) {
                 {option}
             </React.Fragment>
           )}
-          renderInput={(params) => (
-            <TextField {...params} onChange={(e) => setVal(e.target.value)}/>
-          )}
+          renderInput={(params) => {
+            //   console.log(params);
+              return <TextField {...params}
+              InputProps={
+                  {
+                      ...params.InputProps,
+                      startAdornment: params.InputProps.startAdornment.filter((_, i) => i < 3)
+                  }
+              }
+              onChange={(e) => setVal(e.target.value)}>
+                </TextField>
+          }}
         />
     </div>
 }

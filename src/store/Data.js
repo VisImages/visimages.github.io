@@ -303,6 +303,51 @@ class Data {
         };
     }
 
+    @computed get barSeries() {
+        let min = 9999, max = 0;
+        const categories = new Set();
+        const bars = {};
+        const barSeries = [];
+
+        this.showedImages.forEach(img => {
+            const year = this.paperYear[img.pid];
+            min = Math.min(min, year);
+            max = Math.max(max, year);
+
+            img.categories.forEach(cat => {
+                categories.add(cat);
+                const key = `${year},${cat}`;
+                if (!bars.hasOwnProperty(key)) bars[key] = 1;
+                else bars[key] += 1;
+            });
+        });
+
+        for (const cat of [...categories]){
+            const yearSeries = []
+            for (let i = min; i <= max; i++){
+                if (!Object.keys(bars).includes(`${i},${cat}`)) 
+                    yearSeries.push(0);
+                else yearSeries.push(bars[`${i},${cat}`]);
+            }
+            barSeries.push({
+                name: cat,
+                type: 'bar',
+                stack: 'Ad',
+                emphasis: {
+                  focus: 'series'
+                },
+                data: yearSeries,
+            })
+        }
+
+        return {
+            min,
+            max,
+            categories: [...categories],
+            bars: barSeries
+        };
+    }
+
     @observable.shallow showedWords = [];
 
     @action updateWords() {
