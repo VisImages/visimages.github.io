@@ -36,7 +36,7 @@ function BarCharts({d}) {
                 }
             },
             legend: {
-                data: ['papers', 'images'],
+                data: ['VAST', 'InfoVis'],
                 left: 10,
             },
             color: ['#e94b4a', '#1f5886'],
@@ -69,16 +69,16 @@ function BarCharts({d}) {
             },
             series: [
                 {
-                    name: 'papers',
+                    name: 'InfoVis',
                     type: 'bar',
                     stack: 'stat',
-                    data: bars.map(bar => bar.papers),
+                    data: bars.map(bar => bar.InfoVis),
                 },
                 {
-                    name: 'images',
+                    name: 'VAST',
                     type: 'bar',
                     stack: 'stat',
-                    data: bars.map(bar => bar.images),
+                    data: bars.map(bar => bar.VAST),
                 },
             ]
         }

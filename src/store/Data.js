@@ -44,6 +44,7 @@ class Data {
     @observable.shallow allConferences = [];
     @observable.shallow allAuthors = [];
     @observable.shallow allYears = [];
+    @observable.shallow paperConf = {};
     @observable.shallow yearCount = {};
     paperYear = {};
     extractFilters = (certainPapers = null) => {
@@ -54,6 +55,7 @@ class Data {
         const allYears = new Set();
         papers.forEach(p => {
             allConferences.add(p.conference);
+            this.paperConf[p.pid] = p.conference;
             for (const aut of p.authors) allAuthors.add(aut);
             allYears.add(p.year);
             this.paperYear[p.pid] = p.year;
@@ -110,16 +112,16 @@ class Data {
         this.filteredPapers.forEach(p => {
             if (!yearCount[p.year])
                 yearCount[p.year] = {
-                    papers: 0,
-                    images: 0,
+                    InfoVis: 0,
+                    VAST: 0,
                 }
-            yearCount[p.year].papers += 1;
+            yearCount[p.year][this.paperConf[p.pid]] += 1;
         });
 
-        this.showedImages.forEach(img => {
-            const year = this.paperYear[img.pid];
-            yearCount[year].images += 1;
-        })
+        // this.showedImages.forEach(img => {
+        //     const year = this.paperYear[img.pid];
+        //     yearCount[year][img.conference] += 1;
+        // })
         this.yearCount = JSON.parse(JSON.stringify(yearCount));
     };
     getImageInfo = (pid, iid) => {
@@ -209,13 +211,13 @@ class Data {
             const year = minYear + i;
             if (!this.yearCount[year]) return {
                 year,
-                papers: 0,
-                images: 0,
+                VAST: 0,
+                InfoVis: 0,
             }
             return {
                 year,
-                papers: this.yearCount[year].papers,
-                images: this.yearCount[year].images,
+                InfoVis: this.yearCount[year].InfoVis,
+                VAST: this.yearCount[year].VAST,
             }
         })
     }

@@ -18,7 +18,14 @@ class APIv1 {
                 imageInfo[pid].forEach(img => {
                     // console.log(img.iid)
                     // console.log(img);
+                    let conference = undefined
+                    for (const paper of paperInfo){
+                        if (paper.pid == pid){
+                            conference = paper.conference;
+                        }
+                    }
                     images.push({
+                        conference: conference,
                         pid: pid,
                         url: url(`/${pid}/${img.iid}.png`),
                         ...img
@@ -69,7 +76,7 @@ class APIv1 {
         if (Object.keys(params).length === 0 || tokenizer.tokenize(params.search).length == 0){
             const pids = [];
             paperInfo.forEach(paperObj => {
-                pids.push(paperObj)
+                pids.push(paperObj);
             })
             return pids
         }
@@ -94,6 +101,10 @@ class APIv1 {
             }
         })
         return pids;
+    }
+
+    getPaperConference = (pid) => {
+        return paperInfo[pid].conference;
     }
 
     tokenizeAndStem = (text) => {
