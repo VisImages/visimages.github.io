@@ -340,6 +340,7 @@ class Data {
         });
 
         for (const cat of [...categories]) {
+            console.log(this.groupedCat, cat);
             const yearSeries = []
             for (let i = min; i <= max; i++) {
                 if (!Object.keys(bars).includes(`${i},${cat}`))
@@ -349,7 +350,7 @@ class Data {
             barSeries.push({
                 name: cat,
                 type: 'bar',
-                stack: 'Ad',
+                stack: 'total',
                 emphasis: {
                     focus: 'series'
                 },

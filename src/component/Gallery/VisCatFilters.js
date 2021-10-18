@@ -42,7 +42,7 @@ function VisCatFilters({d}) {
             filteredFilters.push(optionalValue);
             moreCnt += 1;
         }
-        if (moreCnt === 20) break;
+        // if (moreCnt === 20) break;
     }
 
     return <div className={classes.root}>

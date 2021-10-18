@@ -1,4 +1,5 @@
 const ColorStyles = {
+    'NoVis': '#d3d3d3',
     'tree': '#e8c7c7',
     'graph': '#d8a3a3',
     'treemap': '#c87e7e',
@@ -29,7 +30,6 @@ const ColorStyles = {
     'area_chart': '#b85ab8',
     'proportional_area_chart': '#a936a9',
     'word_cloud': '#a93670',
-    'NoVis': '#d3d3d3'
 }
 
 const GroupedCategories = {
@@ -67,19 +67,19 @@ const GroupedCategories = {
 }
 
 const GroupedCategoriesColor = {
+    'Others': '#d3d3d3',
     'Tree/Network': '#d8a3a3',
     'Line': '#d8bea3',
     'Diagram': '#c8c87e',
     'Map': '#70a936',
     'Grid': '#5ab85a',
-    'Table': '#5ab8b8',
     'Point': '#36a970',
+    'Table': '#5ab8b8',
     'Circle': '#7ea4c8',
-    'Bar': '#7036a9',
     'Statistics': '#7e7ec8',
+    'Bar': '#7036a9',
     'Area': '#b85ab8',
     'Text': '#a93670',
-    'Others': '#d3d3d3'
 }
 
 
