@@ -75,7 +75,7 @@ function BarCharts({d}) {
         <ReactEcharts style={{
             width: '100%',
             height: '100%',
-        }} option={getOption()}/>
+        }} notMerge option={getOption()}/>
     </div>
 }
 
