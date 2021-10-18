@@ -1,4 +1,5 @@
 import { action, computed, observable } from "mobx";
+import { GroupedCategories } from "./Categories";
 
 class Data {
     constructor(root) {
@@ -247,7 +248,7 @@ class Data {
         return this.images
             .filter(img => {
                 if (!pids.includes(img.pid)) return false;
-                if (this.filterCaption.length > 0){
+                if (this.filterCaption.length > 0) {
                     let isFiltered = false;
                     for (const keyword of this.filterCaption) {
                         console.log(keyword, img.captionStat[keyword])
@@ -268,6 +269,8 @@ class Data {
             });
     }
 
+    @observable groupedCat = true;
+
     @computed get stream() {
         let min = 9999, max = 0;
         const categories = new Set();
@@ -279,8 +282,15 @@ class Data {
             max = Math.max(max, year);
 
             img.categories.forEach(cat => {
-                categories.add(cat);
-                const key = `${year},${cat}`;
+                let key = null;
+                if (this.groupedCat){
+                    categories.add(GroupedCategories[cat]);
+                    key = `${year},${GroupedCategories[cat]}`;
+                }
+                else{
+                    categories.add(cat);
+                    key = `${year},${cat}`;
+                }
                 if (!stream.hasOwnProperty(key)) stream[key] = 1;
                 else stream[key] += 1;
             });
@@ -315,17 +325,24 @@ class Data {
             max = Math.max(max, year);
 
             img.categories.forEach(cat => {
-                categories.add(cat);
-                const key = `${year},${cat}`;
+                let key = null;
+                if (this.groupedCat){
+                    categories.add(GroupedCategories[cat]);
+                    key = `${year},${GroupedCategories[cat]}`;
+                }
+                else{
+                    categories.add(cat);
+                    key = `${year},${cat}`;
+                }
                 if (!bars.hasOwnProperty(key)) bars[key] = 1;
                 else bars[key] += 1;
             });
         });
 
-        for (const cat of [...categories]){
+        for (const cat of [...categories]) {
             const yearSeries = []
-            for (let i = min; i <= max; i++){
-                if (!Object.keys(bars).includes(`${i},${cat}`)) 
+            for (let i = min; i <= max; i++) {
+                if (!Object.keys(bars).includes(`${i},${cat}`))
                     yearSeries.push(0);
                 else yearSeries.push(bars[`${i},${cat}`]);
             }
@@ -334,7 +351,7 @@ class Data {
                 type: 'bar',
                 stack: 'Ad',
                 emphasis: {
-                  focus: 'series'
+                    focus: 'series'
                 },
                 data: yearSeries,
             })

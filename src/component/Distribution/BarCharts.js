@@ -1,25 +1,19 @@
 import React from 'react';
 import {makeStyles} from "@material-ui/core";
 import {inject, observer} from "mobx-react";
-import {ColorStyles, TextTranslate} from "../../store/Categories";
+import {ColorStyles, TextTranslate, GroupedCategoriesColor} from "../../store/Categories";
 import ReactEcharts from 'echarts-for-react';
 
 const useStyles = makeStyles(theme => ({
     root: {
-        position: 'absolute',
-        left: `calc(20vw + ${theme.spacing(1)}px)`,
-        width: `calc(40vw - ${theme.spacing(1.5)}px)`,
-        bottom: theme.spacing(1),
-        height: `calc(50vh - ${theme.spacing(1.5)}px)`,
-        borderRadius: theme.shape.borderRadius,
-        backgroundColor: theme.palette.background.paper,
-        padding: theme.spacing(1)
+        position: 'relative',
+        height: '100%'
     },
 }));
 
-function Stream({d}) {
+function BarCharts({d}) {
     const classes = useStyles();
-    const allCategories = Object.keys(ColorStyles);
+    const allCategories = d.groupedCat?Object.keys(GroupedCategoriesColor): Object.keys(ColorStyles);
     let {min, max, categories, bars} = d.barSeries;
     categories = categories.sort((a, b) => allCategories.indexOf(a) - allCategories.indexOf(b));
     bars = bars.sort((a, b) => {
@@ -48,17 +42,18 @@ function Stream({d}) {
               }
             },
             legend: {
-                formatter: name => TextTranslate[name],
+              formatter: name => d.groupedCat?name:TextTranslate[name],
                 data: categories,
                 x: 'center',
                 y: 'bottom'
             },
-            color: categories.map(cat => ColorStyles[cat]),
+            color: categories.map(cat => d.groupedCat?GroupedCategoriesColor[cat]:ColorStyles[cat]),
+
             grid: {
               top: '3%',
               left: '3%',
               right: '4%',
-              bottom: '25%',
+              bottom: '28%',
               containLabel: true
             },
             xAxis: [
@@ -84,4 +79,4 @@ function Stream({d}) {
     </div>
 }
 
-export default inject('d')(observer(Stream));
+export default inject('d')(observer(BarCharts));

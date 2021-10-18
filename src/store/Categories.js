@@ -32,6 +32,56 @@ const ColorStyles = {
     'NoVis': '#d3d3d3'
 }
 
+const GroupedCategories = {
+    'tree': 'Tree/Network',
+    'graph': 'Tree/Network',
+    'treemap': 'Tree/Network',
+    'hierarchical_edge_bundling': 'Tree/Network',
+    'sunburst_icicle': 'Tree/Network',
+    'line_chart': 'Line',
+    'parallel_coordinate': 'Line',
+    'polar_plot': 'Line',
+    'storyline': 'Line',
+    'flow_diagram': 'Diagram',
+    'chord_diagram': 'Diagram',
+    'sankey_diagram': 'Diagram',
+    'map': 'Map',
+    'heatmap': 'Grid',
+    'unit_visualization': 'Grid',
+    'glyph_based': 'Grid',
+    'scatterplot': 'Point',
+    'matrix': 'Grid',
+    'table': 'Table',
+    'small_multiple': 'Grid',
+    'pie_chart': 'Circle',
+    'sector_chart': 'Circle',
+    'donut_chart': 'Circle',
+    'error_bar': 'Statistics',
+    'box_plot': 'Statistics',
+    'stripe_graph': 'Statistics',
+    'bar_chart': 'Bar',
+    'area_chart': 'Area',
+    'proportional_area_chart': 'Area',
+    'word_cloud': 'Text',
+    'NoVis': 'Others'
+}
+
+const GroupedCategoriesColor = {
+    'Tree/Network': '#d8a3a3',
+    'Line': '#d8bea3',
+    'Diagram': '#c8c87e',
+    'Map': '#70a936',
+    'Grid': '#5ab85a',
+    'Table': '#5ab8b8',
+    'Point': '#36a970',
+    'Circle': '#7ea4c8',
+    'Bar': '#7036a9',
+    'Statistics': '#7e7ec8',
+    'Area': '#b85ab8',
+    'Text': '#a93670',
+    'Others': '#d3d3d3'
+}
+
 
 const TextTranslate = {
     'line_chart': 'line chart',
@@ -65,10 +115,10 @@ const TextTranslate = {
     'stripe_graph': 'stripe graph',
     'polar_plot': 'polar plot',
     'storyline': 'storyline',
-    'NoVis': 'no visualization'
+    'NoVis': 'others'
 }
 
 const ReverseTextTranslate = {};
 Object.keys(TextTranslate).forEach(key => ReverseTextTranslate[TextTranslate[key]] = key);
 
-export { ColorStyles, TextTranslate, ReverseTextTranslate };
+export { ColorStyles, TextTranslate, ReverseTextTranslate, GroupedCategories, GroupedCategoriesColor};

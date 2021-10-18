@@ -3,7 +3,7 @@ import {makeStyles, CssBaseline} from "@material-ui/core";
 import AppBar from "./AppBar/AppBar";
 import ControlPanel from "./ControlPanel/ControlPanel";
 import Gallery from "./Gallery/Gallery";
-import Stream from "./Stream/Stream";
+import Distribution from "./Distribution/Distribution";
 import WordCloud from "./WordCloud/WordCloud";
 import DetailView from "./DetailView/DetailView";
 
@@ -25,7 +25,7 @@ export default function App() {
             <AppBar/>
             <ControlPanel/>
             <Gallery/>
-            <Stream/>
+            <Distribution/>
             <WordCloud/>
             <DetailView/>
         </div>
