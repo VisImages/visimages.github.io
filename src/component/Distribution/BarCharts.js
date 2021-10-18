@@ -53,7 +53,7 @@ function BarCharts({d}) {
               top: '3%',
               left: '3%',
               right: '4%',
-              bottom: '28%',
+              bottom: d.groupedCat?'14%':'28%',
               containLabel: true
             },
             xAxis: [

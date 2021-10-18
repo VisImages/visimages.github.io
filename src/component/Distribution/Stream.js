@@ -51,7 +51,7 @@ function Stream({ d }) {
         left: '3%',
         right: '4%',
         top: '3%',
-        bottom: '33%',
+        bottom: d.groupedCat?'15%':'33%',
         type: 'value',
         min,
         max,
