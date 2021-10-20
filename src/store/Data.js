@@ -164,39 +164,40 @@ class Data {
         'storyline',
         'NoVis'
     ];
-    @observable.shallow filterCategories = [
-        'line_chart',
-        'scatterplot',
-        'tree',
-        'heatmap',
-        'treemap',
-        'graph',
-        'map',
-        'bar_chart',
-        'small_multiple',
-        'matrix',
-        'flow_diagram',
-        'table',
-        'sunburst_icicle',
-        'parallel_coordinate',
-        'box_plot',
-        'error_bar',
-        'glyph_based',
-        'area_chart',
-        'pie_chart',
-        'sector_chart',
-        'word_cloud',
-        'proportional_area_chart',
-        'unit_visualization',
-        'donut_chart',
-        'sankey_diagram',
-        'hierarchical_edge_bundling',
-        'chord_diagram',
-        'stripe_graph',
-        'polar_plot',
-        'storyline',
-        'NoVis'
-    ];
+    @observable.shallow filterCategories = [];
+    // [
+    //     'line_chart',
+    //     'scatterplot',
+    //     'tree',
+    //     'heatmap',
+    //     'treemap',
+    //     'graph',
+    //     'map',
+    //     'bar_chart',
+    //     'small_multiple',
+    //     'matrix',
+    //     'flow_diagram',
+    //     'table',
+    //     'sunburst_icicle',
+    //     'parallel_coordinate',
+    //     'box_plot',
+    //     'error_bar',
+    //     'glyph_based',
+    //     'area_chart',
+    //     'pie_chart',
+    //     'sector_chart',
+    //     'word_cloud',
+    //     'proportional_area_chart',
+    //     'unit_visualization',
+    //     'donut_chart',
+    //     'sankey_diagram',
+    //     'hierarchical_edge_bundling',
+    //     'chord_diagram',
+    //     'stripe_graph',
+    //     'polar_plot',
+    //     'storyline',
+    //     'NoVis'
+    // ];
     @action updateFilterCategories = filters => {
         this.filterCategories = filters;
         this.updateWords();
@@ -259,17 +260,17 @@ class Data {
                     }
                     if (!isFiltered) return false
                 }
-                let isFiltered = false;
-                for (const cat of img.categories)
-                    if (this.filterCategories.includes(cat)) {
-                        isFiltered = true;
-                        break;
+                let isFiltered = true;
+                for (const cat of this.filterCategories)
+                    if (!img.categories.includes(cat)) {
+                        return false;
                     }
                 return isFiltered
             });
     }
 
     @observable groupedCat = true;
+    @observable showOnlySelected = false;
 
     @computed get stream() {
         let min = 9999, max = 0;
@@ -281,6 +282,8 @@ class Data {
             min = Math.min(min, year);
             max = Math.max(max, year);
 
+            // console.log(img);
+
             img.categories.forEach(cat => {
                 let key = null;
                 if (this.groupedCat){
@@ -291,8 +294,8 @@ class Data {
                     categories.add(cat);
                     key = `${year},${cat}`;
                 }
-                if (!stream.hasOwnProperty(key)) stream[key] = 1;
-                else stream[key] += 1;
+                if (!stream.hasOwnProperty(key)) stream[key] = img.nums_of_visualizations[cat]===undefined?1:img.nums_of_visualizations[cat];
+                else {stream[key] += img.nums_of_visualizations[cat]===undefined?1:img.nums_of_visualizations[cat];}
             });
         });
 
@@ -334,13 +337,13 @@ class Data {
                     categories.add(cat);
                     key = `${year},${cat}`;
                 }
-                if (!bars.hasOwnProperty(key)) bars[key] = 1;
-                else bars[key] += 1;
+                if (!bars.hasOwnProperty(key)) bars[key] = img.nums_of_visualizations[cat]===undefined?1:img.nums_of_visualizations[cat];
+                else bars[key] += img.nums_of_visualizations[cat]===undefined?1:img.nums_of_visualizations[cat];
             });
         });
 
         for (const cat of [...categories]) {
-            console.log(this.groupedCat, cat);
+            // console.log(this.groupedCat, cat);
             const yearSeries = []
             for (let i = min; i <= max; i++) {
                 if (!Object.keys(bars).includes(`${i},${cat}`))

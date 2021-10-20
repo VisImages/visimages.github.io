@@ -46,13 +46,13 @@ function VisCatFilters({d}) {
     }
 
     return <div className={classes.root}>
-        <Checkbox
+        {/* <Checkbox
           className={classes.selectAll}
           checked={d.filterCategories.length === d.allCategories.length}
           indeterminate={d.filterCategories.length > 0 && d.filterCategories.length < d.allCategories.length}
           onChange={(e, checked) => {
               d.updateFilterCategories(checked ? d.allCategories : []);
-          }}/>
+          }}/> */}
         <Typography className={classes.title}>Vis. Categories: </Typography>
         <Autocomplete
           className={classes.autocomplete}
@@ -75,12 +75,11 @@ function VisCatFilters({d}) {
             </React.Fragment>
           )}
           renderInput={(params) => {
-            //   console.log(params);
               return <TextField {...params}
               InputProps={
                   {
                       ...params.InputProps,
-                      startAdornment: params.InputProps.startAdornment.filter((_, i) => i < 3)
+                      startAdornment: params.InputProps.startAdornment === undefined?[]:params.InputProps.startAdornment.filter((_, i) => i < 3)
                   }
               }
               onChange={(e) => setVal(e.target.value)}>

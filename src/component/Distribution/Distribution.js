@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     height: '10%',
   },
   switchbox:{
-    width: '40%',
+    width: '30%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -52,6 +52,12 @@ function Distribution({ d }) {
     d.groupedCat = !d.groupedCat;
   };
 
+  const handleSelectedChange = (event) => {
+    d.showOnlySelected = !d.showOnlySelected;
+  };
+
+
+
   return <div className={classes.root}>
     <FormGroup className={classes.switches}>
       <div className={classes.switchbox}>
@@ -61,9 +67,13 @@ function Distribution({ d }) {
         <Typography item>Stream</Typography>
       </div>
       <div className={classes.switchbox}>
+        <Typography>All Vis.</Typography>
+        <Switch checked={d.showOnlySelected} onChange={handleSelectedChange}/>
+        <Typography item>Filtered Vis.</Typography>
+      </div>
+      <div className={classes.switchbox}>
         <Typography>Non-grouped</Typography>
         <Switch checked={d.groupedCat} onChange={handleGroupedChange}/>
-        
         <Typography item>Grouped</Typography>
       </div>
       {/* <FormControlLabel control={<Switch checked={stream} onChange={handleVisChange} />} label="Stream" /> */}

@@ -72,7 +72,6 @@ class APIv1 {
     }
 
     filterPapersByCondition = (params) => {
-        console.log(params)
         if (Object.keys(params).length === 0 || tokenizer.tokenize(params.search).length == 0){
             const pids = [];
             paperInfo.forEach(paperObj => {

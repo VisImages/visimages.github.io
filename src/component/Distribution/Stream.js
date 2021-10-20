@@ -22,8 +22,27 @@ function Stream({ d }) {
     return a[0] - b[0];
   })
 
+  console.log(stream);
   const calCat = new Set();
   stream.forEach(d => calCat.add(d[2]));
+
+  let selected = {}
+  const mappedGroupedCategories = d.filterCategories.map(cat => GroupedCategories[cat])
+  for (const cat of categories) {
+    if (d.showOnlySelected) {
+      if (d.groupedCat) {
+        if (mappedGroupedCategories.includes(cat))
+          selected[cat] = true
+        else selected[cat] = false
+      }
+      else {
+        if (d.filterCategories.includes(cat))
+          selected[cat] = true
+        else selected[cat] = false
+      }
+    }
+    else selected[cat] = true
+  }
 
   const getOption = () => {
     return {
@@ -44,6 +63,7 @@ function Stream({ d }) {
         data: categories,
         x: 'center',
         y: 'bottom',
+        selected: selected,
         // padding: [0,50,0,0]
       },
       color: categories.map(cat => d.groupedCat?GroupedCategoriesColor[cat]:ColorStyles[cat]),
