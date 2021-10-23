@@ -257,7 +257,7 @@ class Data {
                 if (this.filterCaption.length > 0) {
                     let isFiltered = false;
                     for (const keyword of this.filterCaption) {
-                        console.log(keyword, img.captionStat[keyword])
+                        // console.log(keyword, img.captionStat[keyword])
                         if (img.captionStat[keyword] != undefined) {
                             isFiltered = true;
                             break;
