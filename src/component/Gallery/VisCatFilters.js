@@ -62,6 +62,7 @@ function VisCatFilters({d}) {
           options={filteredFilters.map(t => TextTranslate[t])}
           value={d.filterCategories.map(t => TextTranslate[t])}
           onChange={(e, newValue) => {
+              d.initClickWord();
               d.updateFilterCategories(newValue.map(t => ReverseTextTranslate[t]))
           }}
           disableCloseOnSelect
