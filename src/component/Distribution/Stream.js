@@ -22,7 +22,7 @@ function Stream({ d }) {
     return a[0] - b[0];
   })
 
-  console.log(stream);
+  // console.log(stream);
   const calCat = new Set();
   stream.forEach(d => calCat.add(d[2]));
 

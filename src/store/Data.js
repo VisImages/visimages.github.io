@@ -71,6 +71,7 @@ class Data {
     @observable.shallow filterYears = [];
     @observable.shallow filterCaption = [];
     @action updateFilter = (key, value) => {
+        this.initClickWord();
         // console.log(key, value, this.filterAuthors, this.filterConferences, this.filteredPapers);
         if (key === 'search') {
             const res = this.root.apiV1.filterPapersByCondition({
@@ -95,7 +96,8 @@ class Data {
             else
                 this[`filter${key}`] = value;
             this.updateImageCounts();
-            this.updateWords();
+            if (!this.clickOnWord)
+                this.updateWords();
         }
     }
 
@@ -245,10 +247,13 @@ class Data {
 
     @computed get showedImages() {
         const pids = this.filteredPapers.map(p => p.pid);
-        console.log(this.filterCaption, this.filterCaption.length);
+        // console.log(this.filterCaption, this.filterCaption.length);
         return this.images
             .filter(img => {
                 if (!pids.includes(img.pid)) return false;
+                if (this.clickOnWord)
+                    if (img.captionStat[this.clickedWord] == undefined)
+                        return false
                 if (this.filterCaption.length > 0) {
                     let isFiltered = false;
                     for (const keyword of this.filterCaption) {
@@ -271,6 +276,13 @@ class Data {
 
     @observable groupedCat = true;
     @observable showOnlySelected = false;
+    @observable clickOnWord = false;
+    @observable clickedWord = "";
+
+    initClickWord = () => {
+        this.clickOnWord = false;
+        this.clickedWord = "";
+    }
 
     @computed get stream() {
         let min = 9999, max = 0;

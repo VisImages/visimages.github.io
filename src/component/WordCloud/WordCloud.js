@@ -1,5 +1,7 @@
 import React from 'react';
 import {makeStyles} from "@material-ui/core";
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
 import {inject, observer} from "mobx-react";
 import ReactWordcloud from 'react-wordcloud';
 
@@ -14,7 +16,12 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: theme.palette.background.paper,
         padding: theme.spacing(1),
     },
+    placeholder:{
+        display: 'flex',
+        height: '10px'
+    }
 }));
+
 
 const options = {
     colors: ['#1f5886'],
@@ -36,8 +43,35 @@ function WordCloud({d}) {
     const classes = useStyles();
     const words = d.showedWords;
 
+    
+    const callbacks = {
+        
+        getWordColor: word => {
+            if (d.clickOnWord)
+                if (d.clickedWord == word.text)
+                    return '#e94b4a'
+            return '#1f5886'
+        },
+        onWordClick: word => {
+            console.log(word);
+            if (!d.clickOnWord){
+                d.clickOnWord = true;
+                d.clickedWord = word.text;
+            }
+            else if (d.clickOnWord && d.clickedWord != word.text){
+                d.clickedWord = word.text;
+            }
+            else {
+                d.clickOnWord = false;
+                d.clickedWord = "";
+            }
+        },
+    }
+
+
     return <div className={classes.root}>
-        <ReactWordcloud options={options} words={words}/>
+        {d.clickOnWord? <div className={classes.placeholder}><Typography>{`Selected Word: ${d.clickedWord}`}</Typography><CloseIcon onClick={() => d.initClickWord()}/></div>:<div className={classes.placeholder}></div>}
+        <ReactWordcloud callbacks={callbacks} options={options} words={words}/>
     </div>
 }
 
