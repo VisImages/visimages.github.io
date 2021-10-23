@@ -53,7 +53,7 @@ function WordCloud({d}) {
             return '#1f5886'
         },
         onWordClick: word => {
-            console.log(word);
+            // console.log(word);
             if (!d.clickOnWord){
                 d.clickOnWord = true;
                 d.clickedWord = word.text;
@@ -70,7 +70,7 @@ function WordCloud({d}) {
 
 
     return <div className={classes.root}>
-        {d.clickOnWord? <div className={classes.placeholder}><Typography>{`Selected Word: ${d.clickedWord}`}</Typography><CloseIcon onClick={() => d.initClickWord()}/></div>:<div className={classes.placeholder}></div>}
+        {d.clickOnWord? <div className={classes.placeholder} onClick={() => d.initClickWord()}><Typography>{`Selected Word: ${d.clickedWord}`}</Typography><CloseIcon/></div>:<div className={classes.placeholder}></div>}
         <ReactWordcloud callbacks={callbacks} options={options} words={words}/>
     </div>
 }
