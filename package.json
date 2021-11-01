@@ -1,6 +1,6 @@
 {
-  "homepage": "http://visimages.github.io/visimages-explorer",
-  "name": "visimages-explorer",
+  "homepage": "http://visimages.github.io",
+  "name": "home",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
