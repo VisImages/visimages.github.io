@@ -24,12 +24,12 @@ const useStyles = makeStyles(theme => ({
     },
     figure: {
         padding: '10px 60px 10px 60px',
-        width: '80%',
+        maxWidth: '1080px',
     },
     figureHalf: {
         display: 'block',
         padding: '10px 60px 10px 60px',
-        width: '40%',
+        maxWidth: '600px',
     },
     details: {
         display: 'block',
