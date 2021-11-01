@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         left: 0,
         width: `20vw`,
-        top: `calc(5vh + ${theme.spacing(1)}px)`,
+        top: `calc(9vh + ${theme.spacing(1)}px)`,
         bottom: theme.spacing(1),
         borderRadius: `0 ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0`,
         backgroundColor: theme.palette.background.paper,

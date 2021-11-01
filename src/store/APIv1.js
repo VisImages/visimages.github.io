@@ -5,9 +5,9 @@ import imageInfo from "../metadata/visimages_data_with_word_count.json"
 var natural = require('natural');
 var tokenizer = new natural.WordTokenizer();
 
-// const url = uri => "https://github.com/VisImages/visimages-image-data/blob/main"+`${uri}?raw=true`;  //remote version
+const url = uri => "https://github.com/VisImages/visimages-image-data/blob/main"+`${uri}?raw=true`;  //remote version
 
-const url = uri => process.env.PUBLIC_URL+"/image-data"+`${uri}`;  //local version in which the images are stored in the public folder
+//  const url = uri => process.env.PUBLIC_URL+"/image-data"+`${uri}`;  //local version in which the images are stored in the public folder
 
 class APIv1 {
 

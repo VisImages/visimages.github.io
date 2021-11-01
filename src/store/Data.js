@@ -41,7 +41,8 @@ class Data {
             return true;
         })
     }
-
+    
+    @observable router = 'home';
     @observable.shallow allConferences = [];
     @observable.shallow allAuthors = [];
     @observable.shallow allYears = [];
