@@ -90,7 +90,7 @@ function RightPanel({ d }) {
         <Typography variant="h7" className={classes.details}>
             The data in VisImages is organized into three levels, namely, paper, image, and visualization. The paper data includes metadata of the paper (i.e., title, authors, conference, year) and image data. The metadata of the paper is coded from vispubdata.org. The image data is a list of the data of each image, which includes the image file name, textual caption, image position (bounding box) in the paper, and visualitzation data.
             The visualization data is a list of the data of each visualization, including the visualization type and visualization position (bounding box) in the image.
-            In all, the dataset contain the data of 1,397 papers, 12,267 images, and 35,096 visualizations. You can explore the data using <a style={{ display: 'inline', color: 'blue' }} onClick={changeState}>VisImages Explorer</a>.
+            In all, the dataset contain the data of 1,397 papers, 12,267 images, and 35,096 visualizations. You can explore the data using <a style={{ display: 'inline', color: 'blue', cursor: 'pointer', 'text-decoration': 'underline'}} onClick={changeState}>VisImages Explorer</a>.
         </Typography>
 
 
