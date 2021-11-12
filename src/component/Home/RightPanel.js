@@ -102,6 +102,9 @@ function RightPanel({ d }) {
                 <a href="https://drive.google.com/drive/folders/1p00qs7PXCpbxhcaeDeYV4bENh8Jmn53r?usp=sharing">Download the Dataset.</a>
             </li>
             <li>
+                <a href="https://raw.githubusercontent.com/VisImages/visimages-image-data/main/training-material-class%26bbox.pdf">Training materials for the workers.</a>
+            </li>
+            <li>
                 <a href="https://github.com/VisImages/data">Source Code for Images Extraction.</a>
             </li>
             <li>
