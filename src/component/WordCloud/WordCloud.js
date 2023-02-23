@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         position: 'absolute',
         right: theme.spacing(1),
-        width: `calc(40vw - ${theme.spacing(1.5)}px)`,
+        width: `calc(60vw - 400px - ${theme.spacing(1.5)}px)`,
         bottom: theme.spacing(1),
         height: `calc(50vh - ${theme.spacing(1.5)}px)`,
         borderRadius: theme.shape.borderRadius,

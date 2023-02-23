@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         position: 'absolute',
         padding: theme.spacing(1),
-        left: `calc(20vw + ${theme.spacing(1)}px)`,
+        left: `calc(400px + ${theme.spacing(1)}px)`,
         right: theme.spacing(1),
         top: theme.spacing(1),
         height: `calc(50vh - ${theme.spacing(1.5)}px)`,

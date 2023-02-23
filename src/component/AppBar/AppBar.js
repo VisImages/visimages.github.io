@@ -9,7 +9,7 @@ import {inject, observer} from "mobx-react";
 const useStyles = makeStyles(theme => ({
     root: {
         position: 'absolute',
-        width: '20vw',
+        width: '400px',
         height: '9vh',
         left: 0,
         top: 0,

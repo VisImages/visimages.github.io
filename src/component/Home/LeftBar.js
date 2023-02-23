@@ -6,7 +6,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         position: 'absolute',
         left: 0,
-        width: `20vw`,
+        width: `400px`,
         top: `calc(9vh + ${theme.spacing(1)}px)`,
         bottom: theme.spacing(1),
         borderRadius: `0 ${theme.shape.borderRadius}px ${theme.shape.borderRadius}px 0`,

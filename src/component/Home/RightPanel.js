@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         position: 'absolute',
         padding: theme.spacing(1),
-        left: `calc(20vw + ${theme.spacing(1)}px)`,
+        left: `calc(400px + ${theme.spacing(1)}px)`,
         right: theme.spacing(1),
         top: theme.spacing(1),
         height: `calc(100vh - ${theme.spacing(2)}px)`,
@@ -93,6 +93,15 @@ function RightPanel({ d }) {
             In all, the dataset contain the data of 1,397 papers, 12,267 images, and 35,096 visualizations. You can explore the data using <a style={{ display: 'inline', color: 'blue', cursor: 'pointer', 'text-decoration': 'underline'}} onClick={changeState}>VisImages Explorer</a>.
         </Typography>
 
+        <Typography variant="h6" className={classes.title}>
+            News
+        </Typography>
+        <ul className={classes.lists}>
+            <li>
+                [2023.2] We have release the <a href="https://github.com/VisImages/visimages-detection">code and weights</a> for visualization detection.
+            </li>
+        </ul>
+
 
         <Typography variant="h6" className={classes.title}>
             Data & Codes
@@ -100,6 +109,9 @@ function RightPanel({ d }) {
         <ul className={classes.lists}>
             <li>
                 <a href="https://drive.google.com/drive/folders/1p00qs7PXCpbxhcaeDeYV4bENh8Jmn53r?usp=sharing">Download the Dataset.</a>
+            </li>
+            <li>
+                <a href="https://github.com/VisImages/visimages-detection">Visualization detection model.</a>
             </li>
             <li>
                 <a href="https://raw.githubusercontent.com/VisImages/visimages-image-data/main/training-material-class%26bbox.pdf">Training materials for the workers.</a>
